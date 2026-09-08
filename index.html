@@ -1,0 +1,1742 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head><script>window["__codeletBootstrap__"]=JSON.parse('{"A":"A","B":"20260904-05-c4a2e96","C":{"Abril Fatface":"YACgEZbkUVE,0","Alfa Slab One":"YACgEYS9sJU,0","Anton":"YACgEcYqQ-A,0","Archivo":"YAHO2-t-jNE,0","Arial":"YAGyDvJ_4Ts,0","Bebas Neue":"YACgESME5ew,0","Bricolage Grotesque":"YAFyMcdwzpc,0","Canva Sans":"YAFLd8sKbwc,2","Caveat":"YALBs2ploWQ,0","Comic Sans MS":"YAHO2VMiyZo,0","Cormorant Garamond":"YAFdJhX-538,0","Courier New":"YAGzXiGs0_8,0","DM Sans":"YAD1aU3sLnI,0","DM Serif Display":"YAD1aYG82rc,0","Forum":"YACgEcnnqB4,0","Fraunces":"YAEul-FRQw4,0","Georgia":"YAGzXkO0pEM,0","Helvetica Neue":"YAFcf6CtJfI,0","Impact":"YAFcfnjI7Vk,0","Inter":"YAFdJvSyp_k,3","Iowan Old Style":"YAGNIFa8j9o,0","Jacques Francois":"YAHO2a5g66Q,0","JetBrains Mono":"YAFdJksXcAk,0","Libre Baskerville":"YACgEUFdPdA,0","Manrope":"YAHO2b2feC4,0","Merriweather":"YACgEXvHxxs,0","Montserrat":"YADLjI9qxTA,0","Nunito":"YACgEX8C5Gg,0","Oleo Script":"YACgEQQ14jI,0","Phantom Sans":"YAHO2E8Pb88,0","Playfair Display":"YACgEYmuCJE,0","Poppins":"YAFdJjbTu24,1","Press Start 2P":"YAFyGr-8pmQ,0","Quicksand":"YADWjpfPmdk,0","Raleway":"YACgEVg3xZg,0","Segoe UI":"YAHNdRD1Klw,0","Source Sans 3":"YAG4lO1Mj10,0","Spectral":"YAHO2rVUHIM,0","Times New Roman":"YAGzXW3gftg,0","Times":"YAGzXW3gftg,0","Ubuntu":"YACgERDU--Q,0","Work Sans":"YAGXhLOKv44,0","Yellowtail":"YACgEYG4kG4,0","ui-monospace":"YADlN8CFZ8Q,0","ui-sans-serif":"YACkoN-xg4g,0"}}');</script><script src="/_sdk/9e99ecf74af2a081.telemetry_sdk.js" integrity="sha512-tZ7fmfTx2KpCLjXQnEuL9azQ4A5+7+xumsx6r/WYVD0zCP/8LP8hDeCypMQesmP+WyAew4g7l5Ah23Bjd6yoVg=="></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Game Balap Bebek</title>
+  <script src="/_sdk/ef737d3065321745.element_sdk.js" integrity="sha512-x8J+TdQ5JaLV00sKgXFvuFPKkaRTYHSzpN7HBKOS6AHkP/6S5d0vmxnnC6EThU9zy/7eR0rdrD/l1RxCwdL+eg=="></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+        /* ======================================================
+           CSS CUSTOM PROPERTIES — satu sumber kebenaran ukuran
+           Berubah otomatis sesuai layar (HP, Laptop, 75 inch)
+           ====================================================== */
+        :root {
+            --duck-size:            50px;
+            --track-height:         300px;
+            --track-gap:            58px;   /* jarak vertikal antar bebek */
+            --btn-min-h:            44px;
+            --btn-font:             15px;
+            --btn-gap:              4px;
+            --keypad-max-w:         180px;
+            --quiz-q-font:          1rem;
+            --quiz-h4-font:         0.85rem;
+            --answer-min-h:         38px;
+            --answer-font:          1rem;
+            --card-padding:         12px;
+            --game-title-size:      clamp(1.6rem, 3.5vw, 3.2rem);
+            --finish-icon-size:     3.5rem;
+        }
+
+        /* ── HP portrait (≤ 639px) ── */
+        @media (max-width: 639px) {
+            :root {
+                --duck-size:        30px;
+                --track-height:     190px;
+                --track-gap:        44px;
+                --btn-min-h:        38px;
+                --btn-font:         13px;
+                --btn-gap:          3px;
+                --keypad-max-w:     100%;
+                --quiz-q-font:      0.85rem;
+                --quiz-h4-font:     0.75rem;
+                --answer-min-h:     32px;
+                --answer-font:      0.85rem;
+                --card-padding:     8px;
+                --game-title-size:  1.5rem;
+                --finish-icon-size: 2rem;
+            }
+        }
+
+        /* ── HP landscape / small tablet (640–767px) ── */
+        @media (min-width: 640px) and (max-width: 767px) {
+            :root {
+                --duck-size:        38px;
+                --track-height:     220px;
+                --track-gap:        50px;
+                --btn-min-h:        40px;
+                --btn-font:         13px;
+                --keypad-max-w:     160px;
+                --quiz-q-font:      0.9rem;
+                --game-title-size:  1.9rem;
+                --finish-icon-size: 2.5rem;
+            }
+        }
+
+        /* ── Tablet (768–1023px) ── */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            :root {
+                --duck-size:        44px;
+                --track-height:     260px;
+                --track-gap:        55px;
+                --btn-min-h:        42px;
+                --btn-font:         14px;
+                --keypad-max-w:     170px;
+                --game-title-size:  2.4rem;
+                --finish-icon-size: 3rem;
+            }
+        }
+
+        /* ── Laptop / Desktop (1024–1919px) ── */
+        @media (min-width: 1024px) and (max-width: 1919px) {
+            :root {
+                --duck-size:        55px;
+                --track-height:     330px;
+                --track-gap:        68px;
+                --btn-min-h:        46px;
+                --btn-font:         15px;
+                --keypad-max-w:     185px;
+                --quiz-q-font:      1.05rem;
+                --answer-min-h:     40px;
+                --card-padding:     14px;
+                --game-title-size:  3rem;
+                --finish-icon-size: 4rem;
+            }
+        }
+
+        /* ── Layar 75 inch / TV / Proyektor (≥ 1920px) ── */
+        @media (min-width: 1920px) {
+            :root {
+                --duck-size:        90px;
+                --track-height:     500px;
+                --track-gap:        110px;
+                --btn-min-h:        72px;
+                --btn-font:         22px;
+                --btn-gap:          6px;
+                --keypad-max-w:     280px;
+                --quiz-q-font:      1.5rem;
+                --quiz-h4-font:     1.2rem;
+                --answer-min-h:     60px;
+                --answer-font:      1.5rem;
+                --card-padding:     20px;
+                --game-title-size:  4.5rem;
+                --finish-icon-size: 6rem;
+            }
+        }
+
+        /* ── Landscape sangat pendek (HP miring) ── */
+        @media (max-height: 500px) and (orientation: landscape) {
+            :root {
+                --duck-size:        26px;
+                --track-height:     130px;
+                --track-gap:        36px;
+                --btn-min-h:        30px;
+                --btn-font:         11px;
+                --card-padding:     6px;
+                --game-title-size:  1.1rem;
+                --finish-icon-size: 1.5rem;
+            }
+        }
+
+        /* ================================================
+           BASE STYLES menggunakan custom properties
+           ================================================ */
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            -webkit-text-size-adjust: 100%;
+            overscroll-behavior: none;
+        }
+
+        /* Ukuran bebek dari CSS variable → dipakai juga di JS */
+        .duck {
+            width:  var(--duck-size) !important;
+            height: var(--duck-size) !important;
+            transition: transform 0.3s ease-in-out;
+            will-change: transform;
+        }
+
+        /* Race track */
+        .race-track {
+            height: var(--track-height) !important;
+        }
+
+        /* Game title */
+        .game-title {
+            font-size: var(--game-title-size) !important;
+        }
+
+        /* Finish line emoji */
+        .finish-icon {
+            font-size: var(--finish-icon-size) !important;
+        }
+
+        /* Quiz card */
+        .quiz-card {
+            padding: var(--card-padding) !important;
+        }
+
+        /* Question font */
+        .quiz-question {
+            font-size: var(--quiz-q-font) !important;
+        }
+        .quiz-card h4 {
+            font-size: var(--quiz-h4-font) !important;
+        }
+
+        /* Answer display */
+        .answer-display {
+            min-height: var(--answer-min-h) !important;
+            font-size:  var(--answer-font) !important;
+            will-change: transform;
+        }
+
+        /* Keypad container */
+        .keypad-wrap {
+            max-width: var(--keypad-max-w);
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* ── KEYPAD BUTTON — inti responsivitas sentuhan ── */
+        .keypad-btn {
+            /* Ukuran dari variable */
+            min-height: var(--btn-min-h) !important;
+            font-size:  var(--btn-font) !important;
+            padding:    0 !important;            /* flex akan mengatur konten */
+            width: 100%;
+
+            /* Layout */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+
+            /* Multitouch — tidak ada ghost click, tidak ada zoom */
+            touch-action:              manipulation;
+            user-select:               none;
+            -webkit-user-select:       none;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout:     none;
+            -webkit-user-drag:         none;
+            pointer-events:            auto;   /* setiap tombol bisa disentuh bersamaan */
+
+            /* Transisi */
+            transition: transform 0.15s ease, filter 0.15s ease;
+            will-change: transform;
+        }
+        .keypad-btn:hover  { transform: scale(1.06); filter: brightness(1.05); }
+        .keypad-btn:active { transform: scale(0.93); filter: brightness(0.9);  }
+
+        /* ── GRID soal — otomatis menyesuaikan jumlah pemain (2/3/4) ── */
+        #quizBoard {
+            display: grid;
+            gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        }
+        @media (max-width: 639px) {
+            #quizBoard { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+        @media (min-width: 1920px) {
+            #quizBoard { gap: 18px; }
+        }
+
+        /* ── Isolasi sentuhan antar area pemain ── */
+        .player-zone {
+            touch-action: manipulation;
+            isolation: isolate;     /* konteks stacking sendiri */
+            position: relative;
+        }
+
+        /* Race track container — cegah pan mengganggu input */
+        .race-track, #quizBoard {
+            touch-action: pan-y;
+        }
+
+        /* ── Finish line ── */
+        .finish-line {
+            background: repeating-linear-gradient(
+                90deg, #000 0, #000 10px, #fff 10px, #fff 20px
+            );
+        }
+
+        /* ── Animasi kemenangan ── */
+        .winner-animation {
+            animation: bounce 0.5s ease-in-out infinite alternate;
+        }
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to   { transform: translateY(-10px); }
+        }
+
+        /* ── Feedback sentuhan ── */
+        .input-feedback {
+            animation: inputPulse 0.18s ease-out;
+        }
+        @keyframes inputPulse {
+            0%   { transform: scale(1); }
+            50%  { transform: scale(1.06); }
+            100% { transform: scale(1); }
+        }
+
+        /* ── Sound pulse ── */
+        .sound-indicator {
+            animation: soundPulse 0.3s ease-out;
+        }
+        @keyframes soundPulse {
+            0%   { transform: scale(1);   opacity: 1;   }
+            50%  { transform: scale(1.2); opacity: 0.8; }
+            100% { transform: scale(1);   opacity: 1;   }
+        }
+
+        /* ── Scoreboard input ── */
+        .scoreboard-input:focus {
+            transform: scale(1.05);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.3);
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/fbe2ebfd64647c54.data_sdk.js" type="text/javascript" integrity="sha512-vkTX6CfvpHc3WbjK+tFJCaDuw4ERA4aEV/e5/7+MMJPMTF4RJYCI6CAwJBT/gtDW+dba4uLSsPUgDjVDHWtgUQ=="></script>
+ </head>
+ <body class="h-full bg-gradient-to-b from-sky-200 to-green-200 font-sans">
+  <div class="container mx-auto px-4 py-6 h-full flex flex-col"><!-- Setup Modal -->
+   <div id="setupModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50" style="backdrop-filter: blur(5px);">
+    <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4 shadow-2xl">
+     <div class="text-center mb-6">
+      <div class="text-6xl mb-4">
+       🦆
+      </div>
+      <h2 class="text-2xl font-bold text-blue-800 mb-2">Pengaturan Game</h2>
+      <p class="text-gray-600">Pilih kelas dan jenis soal matematika</p>
+     </div>
+     <div class="space-y-4"><!-- Jumlah Pemain Selection -->
+      <div><label class="block text-sm font-bold text-gray-700 mb-2">Jumlah Pemain:</label>
+       <div id="jumlahPemainGroup" class="grid grid-cols-3 gap-2">
+        <button type="button" data-jumlah="2" class="jumlah-pemain-btn py-2 rounded-lg border-2 border-blue-300 font-bold text-blue-700">2 Pemain</button>
+        <button type="button" data-jumlah="3" class="jumlah-pemain-btn py-2 rounded-lg border-2 border-blue-300 font-bold text-blue-700">3 Pemain</button>
+        <button type="button" data-jumlah="4" class="jumlah-pemain-btn py-2 rounded-lg border-2 border-blue-300 font-bold text-blue-700">4 Pemain</button>
+       </div>
+      </div>
+      <!-- Kelas Selection -->
+      <div><label class="block text-sm font-bold text-gray-700 mb-2">Pilih Kelas:</label> <select id="kelasSelect" class="w-full p-3 border-2 border-blue-300 rounded-lg focus:border-blue-500 focus:outline-none"> <option value="1">Kelas 1</option> <option value="2">Kelas 2</option> <option value="3">Kelas 3</option> <option value="4">Kelas 4</option> <option value="5">Kelas 5</option> <option value="6">Kelas 6</option> <option value="7">Kelas 7</option> <option value="8">Kelas 8</option> <option value="9">Kelas 9</option> <option value="10">Kelas 10</option> <option value="11">Kelas 11</option> <option value="12">Kelas 12</option> </select>
+      </div><!-- Jenis Soal Selection -->
+      <div><label class="block text-sm font-bold text-gray-700 mb-2">Pilih Jenis Soal:</label> <select id="jenisSoalSelect" class="w-full p-3 border-2 border-purple-300 rounded-lg focus:border-purple-500 focus:outline-none"> <option value="penjumlahan">➕ Penjumlahan</option> <option value="pengurangan">➖ Pengurangan</option> <option value="perkalian" disabled>✖️ Perkalian (Kelas 3+)</option> <option value="pembagian" disabled>➗ Pembagian (Kelas 4+)</option> </select>
+      </div><!-- Info Tingkat Kesulitan -->
+      <div id="difficultyInfo" class="bg-blue-50 p-3 rounded-lg border border-blue-200">
+       <h4 class="font-bold text-blue-800 mb-1">Tingkat Kesulitan:</h4>
+       <p id="difficultyText" class="text-sm text-blue-600">Angka 1-10 untuk penjumlahan dan pengurangan</p>
+      </div>
+     </div>
+     <div class="mt-6 flex gap-3"><button id="startGameBtn" class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition-colors"> 🏁 Mulai Balapan! </button>
+     </div>
+    </div>
+   </div><!-- Header -->
+   <header class="text-center mb-6">
+    <h1 id="gameTitle" class="game-title text-4xl md:text-5xl font-bold text-blue-800 mb-2">🦆 Game Balap Bebek 🦆</h1>
+    <p class="text-lg text-blue-600">Siapa bebek tercepat hari ini?</p>
+   </header><!-- Race Track -->
+   <div class="bg-blue-100 rounded-lg p-3 md:p-5 mb-3 relative overflow-hidden">
+    <div class="finish-line absolute right-0 top-0 w-8 h-full opacity-70"></div><!-- Track Header -->
+    <div class="text-center mb-2 md:mb-3">
+     <h3 class="text-xl md:text-3xl font-bold text-blue-800">🏁 Arena Balap Bebek 🏁</h3>
+    </div><!-- Single Race Track -->
+    <div class="race-track relative bg-gradient-to-r from-blue-200 to-blue-300 rounded-lg border-4 border-blue-400 shadow-lg"><!-- Progress markers -->
+     <div class="absolute top-0 left-1/4 w-2 h-full bg-white opacity-40"></div>
+     <div class="absolute top-0 left-1/2 w-2 h-full bg-white opacity-60"></div>
+     <div class="absolute top-0 left-3/4 w-2 h-full bg-white opacity-40"></div><!-- Finish line emoji — ukuran via CSS variable -->
+     <div class="finish-icon absolute right-4 top-1/2 transform -translate-y-1/2 leading-none select-none">🏁</div><!-- All ducks in one track -->
+     <div id="raceTrack" class="relative h-full"><!-- Ducks will be positioned here -->
+     </div>
+    </div><!-- Winner Display -->
+    <div id="winnerDisplay" class="hidden absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
+     <div class="bg-white rounded-lg p-6 md:p-8 text-center w-[90%] max-w-md shadow-2xl">
+      <div class="text-5xl md:text-6xl mb-3">🏆</div>
+      <h2 class="text-2xl md:text-3xl font-bold text-yellow-600 mb-2">Selamat!</h2>
+      <p id="winnerText" class="text-lg md:text-xl text-gray-700 mb-5"></p>
+      <div class="flex gap-3 justify-center flex-wrap">
+       <button id="playAgainBtn" class="keypad-btn bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition-colors" style="min-height:44px;font-size:15px;width:auto;"> 🎮 Bermain Lagi </button>
+       <button id="closeWinnerBtn" class="keypad-btn bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-colors" style="min-height:44px;font-size:15px;width:auto;"> ❌ Tutup </button>
+      </div>
+     </div>
+    </div>
+   </div><!-- Quiz Board -->
+   <div class="bg-white rounded-lg shadow-lg p-2 mb-3 w-full">
+    <h3 class="text-base md:text-lg font-bold text-center mb-2 text-gray-800">🧮 Papan Soal Matematika</h3>
+    <div id="quizBoard"><!-- Quiz questions will be generated here by JS -->
+    </div>
+    <div class="mt-3 flex flex-col sm:flex-row gap-4 justify-center items-center"><button id="generateQuizBtn" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-3 rounded-lg transition-colors text-sm"> 🎲 Buat Soal Baru </button> <button id="resetBtn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-3 rounded-lg transition-colors text-sm"> 🔄 Reset Game </button> <!-- Game Settings -->
+     <div class="flex items-center gap-2 text-sm text-gray-600"><span id="currentSettings">Kelas 1 - Penjumlahan</span> <button id="changeSettingsBtn" class="text-blue-500 hover:text-blue-700 underline">Ubah Pengaturan</button>
+     </div><!-- Zoom & Fullscreen Controls -->
+     <div class="flex gap-2 items-center"><button id="zoomOutBtn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-3 rounded-lg transition-colors text-sm"> 🔍- </button> <span id="zoomLevel" class="text-sm font-semibold text-gray-700 min-w-[60px] text-center">100%</span> <button id="zoomInBtn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-3 rounded-lg transition-colors text-sm"> 🔍+ </button> <button id="fullscreenBtn" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-3 rounded-lg transition-colors text-sm"> 📺 </button> <button id="closeFullscreenBtn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-3 rounded-lg transition-colors text-sm hidden"> ❌ </button>
+     </div><!-- Credit Line -->
+     <div class="text-xs text-gray-500 text-center">
+      Created: Erwin Hadi - 082266300282 - by Canvacode
+     </div>
+    </div>
+    <div id="quizResults" class="mt-3 text-center hidden">
+     <h4 class="text-base font-semibold mb-2">Hasil Kuis:</h4>
+     <div id="quizScoreResults" class="grid grid-cols-4 gap-2"></div>
+    </div>
+   </div>
+  </div>
+  <script>
+        // Google Apps Script doGet function for web deployment
+        function doGet() {
+            return HtmlService.createHtmlOutputFromFile('index')
+                .setTitle('Game Balap Bebek - Matematika')
+                .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
+                .addMetaTag('viewport', 'width=device-width, initial-scale=1.0');
+        }
+
+        // Default configuration
+        const defaultConfig = {
+            game_title: "🦆 Game Balap Bebek 🦆",
+            start_button_text: "🏁 Mulai Balapan!",
+            reset_button_text: "🔄 Reset Game"
+        };
+
+        // Zoom state
+        let zoomState = {
+            level: 1.0,
+            min: 0.5,
+            max: 2.0,
+            step: 0.1
+        };
+
+        // Fullscreen state
+        let fullscreenState = {
+            isFullscreen: false
+        };
+
+        // Game settings
+        let gameSettings = {
+            kelas: 1,
+            jenisSoal: 'penjumlahan',
+            jumlahPemain: 4
+        };
+
+        // Audio system untuk feedback suara
+        const audioSystem = {
+            context: null,
+            enabled: true,
+            
+            // Initialize audio context
+            init() {
+                try {
+                    this.context = new (window.AudioContext || window.webkitAudioContext)();
+                    this.enabled = true;
+                } catch (e) {
+                    console.log('Audio not supported');
+                    this.enabled = false;
+                }
+            },
+            
+            // Play beep sound untuk jawaban benar
+            playCorrectSound() {
+                if (!this.enabled || !this.context) return;
+                
+                try {
+                    const oscillator = this.context.createOscillator();
+                    const gainNode = this.context.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(this.context.destination);
+                    
+                    // Suara beep tinggi untuk jawaban benar
+                    oscillator.frequency.setValueAtTime(800, this.context.currentTime);
+                    oscillator.frequency.setValueAtTime(1000, this.context.currentTime + 0.1);
+                    
+                    gainNode.gain.setValueAtTime(0.3, this.context.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, this.context.currentTime + 0.3);
+                    
+                    oscillator.start(this.context.currentTime);
+                    oscillator.stop(this.context.currentTime + 0.3);
+                } catch (e) {
+                    console.log('Error playing sound:', e);
+                }
+            },
+            
+            // Play duck sound untuk kemenangan
+            playDuckSound() {
+                if (!this.enabled || !this.context) return;
+                
+                try {
+                    const oscillator = this.context.createOscillator();
+                    const gainNode = this.context.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(this.context.destination);
+                    
+                    // Suara bebek (quack-quack pattern)
+                    oscillator.frequency.setValueAtTime(300, this.context.currentTime);
+                    oscillator.frequency.setValueAtTime(200, this.context.currentTime + 0.1);
+                    oscillator.frequency.setValueAtTime(300, this.context.currentTime + 0.2);
+                    oscillator.frequency.setValueAtTime(200, this.context.currentTime + 0.3);
+                    
+                    gainNode.gain.setValueAtTime(0.4, this.context.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, this.context.currentTime + 0.5);
+                    
+                    oscillator.start(this.context.currentTime);
+                    oscillator.stop(this.context.currentTime + 0.5);
+                } catch (e) {
+                    console.log('Error playing duck sound:', e);
+                }
+            },
+            
+            // Play error sound untuk jawaban salah
+            playErrorSound() {
+                if (!this.enabled || !this.context) return;
+                
+                try {
+                    const oscillator = this.context.createOscillator();
+                    const gainNode = this.context.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(this.context.destination);
+                    
+                    // Suara rendah untuk jawaban salah
+                    oscillator.frequency.setValueAtTime(200, this.context.currentTime);
+                    oscillator.frequency.setValueAtTime(150, this.context.currentTime + 0.2);
+                    
+                    gainNode.gain.setValueAtTime(0.2, this.context.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, this.context.currentTime + 0.4);
+                    
+                    oscillator.start(this.context.currentTime);
+                    oscillator.stop(this.context.currentTime + 0.4);
+                } catch (e) {
+                    console.log('Error playing error sound:', e);
+                }
+            }
+        };
+
+        // Master template — semua bebek yang tersedia (id 1-4).
+        // gameState.players akan diisi dari sini sesuai jumlah pemain yang dipilih.
+        const allPlayersTemplate = [
+            { id: 1, name: "Bebek Kuning", emoji: "🦆", color: "#FFD700", imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgoLdbuJgld84G73ylxSTJ24zRGFV70WPWMoPaeojQdgBLTHRiN90wYMyPxkaWue2iIvLuCARzW6ldiUfQ-7yhXW4FLsn-NSwj0lyq84B2oKiCRNmq6yIgI4O1MXrElBD1WIzPsfTs07b1XoqEXnr9KWr6B4fYh1ME_ASiTIQnPHAAAME9pW9kCe1BmtDlk/s320/image-removebg-preview%20(5).png" },
+            { id: 2, name: "Bebek Putih", emoji: "🦢", color: "#FFFFFF", imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh4d9g1MlHAYe4GHq3RSsw67pMOz-V9e9QqtFAGc2rqpI9KAEo9Jl2eNwtpoxZbIPXuOj82kc7lma1lKM4rncf2tCrWH-EwuBwhmHjEXVHd6We1HFf4t8FeLx09qjviMOglHFZzHN705MMR-DKITf2N9-ENgiwTqhvXpWtWwRlrZeiXjbmH6KAK4re_GGDG/s320/image-removebg-preview%20(4).png" },
+            { id: 3, name: "Bebek Hijau", emoji: "🦆", color: "#32CD32", imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh7hiKhH_O_ugdhdnXCHYC1eNypm8hTLfmkDxDUe1N3wXGRENC-kyVnCDpvy1Vs0s3w6Sxxf-QkqU9QFoASKue3ykUYFfPCejkEilaWL8dI-x8GfbKRG2X-GJ0B9dKsifCW5768Ex1Ts7KlwTTCk8Tc148YeLZhjTMtaDWSh5F8Yro6aRG2wpelXwe8a8KL/s320/image-removebg-preview%20(2).png" },
+            { id: 4, name: "Bebek Biru", emoji: "🦆", color: "#4169E1", imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiaHXf022r1hpm7n-B3vvw3oqNW0fpNA6Q3RRxGe52La65vfn8Jx8AlOIEPUKdYHnb6qECFAe9UgwxJoaW8TiUhuuqB0ik-TvBXiFSuzaJa-NjDr96yE4DuN13yeh6yzDcoXPe32Gq9FnnjVGZC7uMh5kUYrBoZiBMOYixWClaY4Fsa6QbWB1JjwWnBFZNS/s320/image-removebg-preview%20(3).png" }
+        ];
+
+        // Bangun gameState.players dari template sesuai jumlah pemain
+        function buildPlayers(jumlahPemain) {
+            return allPlayersTemplate.slice(0, jumlahPemain).map(p => ({
+                ...p,
+                position: 0,
+                speed: 1,
+                correctAnswers: 0
+            }));
+        }
+
+        // Game state
+        let gameState = {
+            isRacing: false,
+            players: buildPlayers(4),
+            winner: null,
+            raceInterval: null,
+            quizQuestions: [],
+            quizMode: false,
+            currentRound: 0,
+            maxRounds: 10,
+            gameStarted: false,
+            gameEnded: false
+        };
+
+        // Initialize game
+        function initGame() {
+            initializePlayerInputStates();
+            initializeAnswerTracking();
+            createRaceTrack();
+            createQuizBoard();
+            setupEventListeners();
+        }
+
+        // Generate random math question based on class and type
+        function generateMathQuestion() {
+            const kelas = gameSettings.kelas;
+            const jenisSoal = gameSettings.jenisSoal;
+            
+            let question, answer;
+            
+            if (jenisSoal === 'penjumlahan') {
+                const { num1, num2 } = getNumbersForClass(kelas);
+                question = `${num1} + ${num2}`;
+                answer = num1 + num2;
+            } else if (jenisSoal === 'pengurangan') {
+                const { num1, num2 } = getNumbersForClass(kelas);
+                // Ensure positive result
+                const larger = Math.max(num1, num2);
+                const smaller = Math.min(num1, num2);
+                question = `${larger} - ${smaller}`;
+                answer = larger - smaller;
+            } else if (jenisSoal === 'perkalian') {
+                const { num1, num2 } = getMultiplicationNumbers(kelas);
+                question = `${num1} × ${num2}`;
+                answer = num1 * num2;
+            } else if (jenisSoal === 'pembagian') {
+                const { dividend, divisor } = getDivisionNumbers(kelas);
+                question = `${dividend} ÷ ${divisor}`;
+                answer = dividend / divisor;
+            }
+            
+            return { question, answer };
+        }
+
+        // Get numbers based on class level
+        function getNumbersForClass(kelas) {
+            let num1, num2;
+            
+            switch(kelas) {
+                case 1:
+                    // Kelas 1: angka 1-10
+                    num1 = Math.floor(Math.random() * 10) + 1;
+                    num2 = Math.floor(Math.random() * 10) + 1;
+                    break;
+                case 2:
+                    // Kelas 2: angka 1-20
+                    num1 = Math.floor(Math.random() * 20) + 1;
+                    num2 = Math.floor(Math.random() * 20) + 1;
+                    break;
+                case 3:
+                    // Kelas 3: angka 1-30
+                    num1 = Math.floor(Math.random() * 30) + 1;
+                    num2 = Math.floor(Math.random() * 30) + 1;
+                    break;
+                case 4:
+                    // Kelas 4: angka 1-50
+                    num1 = Math.floor(Math.random() * 50) + 1;
+                    num2 = Math.floor(Math.random() * 50) + 1;
+                    break;
+                case 5:
+                case 6:
+                case 7:
+                case 8:
+                case 9:
+                case 10:
+                case 11:
+                case 12:
+                    // Kelas 5-12: angka 1-100 (sama seperti kelas 6)
+                    num1 = Math.floor(Math.random() * 100) + 1;
+                    num2 = Math.floor(Math.random() * 100) + 1;
+                    break;
+                default:
+                    num1 = Math.floor(Math.random() * 10) + 1;
+                    num2 = Math.floor(Math.random() * 10) + 1;
+            }
+            
+            return { num1, num2 };
+        }
+
+        // Get multiplication numbers
+        function getMultiplicationNumbers(kelas) {
+            let num1, num2;
+            
+            if (kelas === 3) {
+                // Kelas 3: perkalian 1-5
+                num1 = Math.floor(Math.random() * 5) + 1;
+                num2 = Math.floor(Math.random() * 5) + 1;
+            } else { // kelas 4, 5, 6, 7, 8, 9, 10, 11, 12
+                // Kelas 4-12: perkalian 1-10 (sama seperti kelas 6)
+                num1 = Math.floor(Math.random() * 10) + 1;
+                num2 = Math.floor(Math.random() * 10) + 1;
+            }
+            
+            return { num1, num2 };
+        }
+
+        // Get division numbers (ensure exact division)
+        function getDivisionNumbers(kelas) {
+            let divisor, quotient, dividend;
+            
+            // Generate divisor and quotient, then calculate dividend
+            divisor = Math.floor(Math.random() * 10) + 1;
+            quotient = Math.floor(Math.random() * 10) + 1;
+            dividend = divisor * quotient;
+            
+            return { dividend, divisor };
+        }
+
+        // Create quiz board
+        function createQuizBoard() {
+            const quizContainer = document.getElementById('quizBoard');
+            quizContainer.innerHTML = '';
+            gameState.quizQuestions = [];
+
+            gameState.players.forEach(player => {
+                const mathQuestion = generateMathQuestion();
+                gameState.quizQuestions.push({
+                    playerId: player.id,
+                    question: mathQuestion.question,
+                    answer: mathQuestion.answer,
+                    playerAnswer: null,
+                    isCorrect: false,
+                    timeAnswered: null
+                });
+
+                const quizCard = document.createElement('div');
+                // player-zone = isolasi multitouch tiap pemain
+                quizCard.className = 'player-zone quiz-card bg-purple-50 rounded-lg border-2 border-purple-200 w-full';
+                quizCard.innerHTML = `
+                    <h4 class="font-bold text-center mb-1 text-purple-800">👤 Pemain ${player.id}</h4>
+                    <div class="text-center mb-1">
+                        <div class="quiz-question font-bold text-purple-600 leading-tight">${mathQuestion.question} = ?</div>
+                        <div id="score-display-${player.id}" class="text-xs text-purple-500 mt-0.5">Benar: 0</div>
+                    </div>
+                    <div class="answer-display bg-white border-2 border-purple-300 rounded text-center font-bold mb-2 flex items-center justify-center" id="answer-display-${player.id}">
+                        <span class="text-gray-400 text-sm">Jawaban</span>
+                    </div>
+
+                    <!-- Keypad — gunakan .keypad-wrap agar max-w dari CSS variable -->
+                    <div class="keypad-wrap mb-1">
+                        <div class="grid grid-cols-4 mb-1" style="gap:var(--btn-gap)">
+                            <button class="keypad-btn bg-blue-500 text-white rounded" ontouchstart="touchBtn(event,${player.id},1)" onclick="clickBtn(event,${player.id},1)">1</button>
+                            <button class="keypad-btn bg-blue-500 text-white rounded" ontouchstart="touchBtn(event,${player.id},2)" onclick="clickBtn(event,${player.id},2)">2</button>
+                            <button class="keypad-btn bg-blue-500 text-white rounded" ontouchstart="touchBtn(event,${player.id},3)" onclick="clickBtn(event,${player.id},3)">3</button>
+                            <button class="keypad-btn bg-blue-500 text-white rounded" ontouchstart="touchBtn(event,${player.id},4)" onclick="clickBtn(event,${player.id},4)">4</button>
+                        </div>
+                        <div class="grid grid-cols-4 mb-1" style="gap:var(--btn-gap)">
+                            <button class="keypad-btn bg-blue-500 text-white rounded" ontouchstart="touchBtn(event,${player.id},5)" onclick="clickBtn(event,${player.id},5)">5</button>
+                            <button class="keypad-btn bg-blue-500 text-white rounded" ontouchstart="touchBtn(event,${player.id},6)" onclick="clickBtn(event,${player.id},6)">6</button>
+                            <button class="keypad-btn bg-blue-500 text-white rounded" ontouchstart="touchBtn(event,${player.id},7)" onclick="clickBtn(event,${player.id},7)">7</button>
+                            <button class="keypad-btn bg-blue-500 text-white rounded" ontouchstart="touchBtn(event,${player.id},8)" onclick="clickBtn(event,${player.id},8)">8</button>
+                        </div>
+                        <div class="grid grid-cols-4" style="gap:var(--btn-gap)">
+                            <button class="keypad-btn bg-blue-500 text-white rounded" ontouchstart="touchBtn(event,${player.id},9)" onclick="clickBtn(event,${player.id},9)">9</button>
+                            <button class="keypad-btn bg-blue-500 text-white rounded" ontouchstart="touchBtn(event,${player.id},0)" onclick="clickBtn(event,${player.id},0)">0</button>
+                            <button class="keypad-btn bg-red-500 text-white rounded" ontouchstart="touchClear(event,${player.id})" onclick="clickClear(event,${player.id})">C</button>
+                            <button class="keypad-btn bg-green-500 text-white rounded font-extrabold" ontouchstart="touchSubmit(event,${player.id})" onclick="clickSubmit(event,${player.id})">GO</button>
+                        </div>
+                    </div>
+                `;
+                quizContainer.appendChild(quizCard);
+            });
+        }
+
+        // Create race track
+        function createRaceTrack() {
+            const trackContainer = document.getElementById('raceTrack');
+            trackContainer.innerHTML = '';
+
+            const rootStyle = getComputedStyle(document.documentElement);
+
+            // Baca CSS variable --track-gap untuk posisi vertikal bebek
+            const trackGap = parseInt(rootStyle.getPropertyValue('--track-gap') || '58');
+            const duckSize = parseInt(rootStyle.getPropertyValue('--duck-size') || '50');
+            const currentTrackHeight = parseInt(rootStyle.getPropertyValue('--track-height') || '300');
+
+            // ── Perbaikan: tinggi arena dihitung berdasarkan JUMLAH PEMAIN
+            // sebenarnya, bukan cuma mengandalkan breakpoint layar. Sebab
+            // breakpoint (mis. mode landscape pendek) bisa saja cocok
+            // walau pemainnya banyak (mis. saat embed di Canva / fullscreen
+            // dengan tinggi viewport terbatas), sehingga bebek baris bawah
+            // kepotong. Di sini kita paksa tinggi minimum arena supaya
+            // muat semua bebek + label nama, apa pun breakpoint yang aktif.
+            const labelAllowance = 34; // perkiraan tinggi label nama + margin
+            const topOffset = 10;
+            const bottomPadding = 14;
+            const requiredHeight = topOffset + (gameState.players.length * trackGap) + duckSize + labelAllowance + bottomPadding;
+
+            if (requiredHeight > currentTrackHeight) {
+                // Override variable --track-height secara inline (menang atas
+                // aturan :root di media query karena inline style pada
+                // elemen yang sama punya prioritas lebih tinggi)
+                document.documentElement.style.setProperty('--track-height', `${requiredHeight}px`);
+            } else {
+                // Jumlah pemain sedikit / breakpoint sudah cukup tinggi —
+                // hapus override supaya kembali mengikuti breakpoint asli
+                document.documentElement.style.removeProperty('--track-height');
+            }
+
+            // Create all ducks in one track with different vertical positions
+            gameState.players.forEach((player, index) => {
+                // Create container for duck and name
+                const duckContainer = document.createElement('div');
+                duckContainer.className = 'absolute flex flex-col items-center';
+                duckContainer.style.left = '15px';
+                duckContainer.style.top = `${10 + (index * trackGap)}px`;
+                duckContainer.style.transform = 'translateX(0px)';
+                duckContainer.id = `duck-container-${player.id}`;
+                
+                // Create duck element — ukuran dari CSS .duck class (CSS variable)
+                const duck = document.createElement('img');
+                duck.id = `duck-${player.id}`;
+                duck.className = 'duck z-10 transition-all duration-300';
+                duck.src = player.imageUrl;
+                duck.alt = player.name;
+                // Hapus width/height inline — biarkan CSS class .duck yang mengatur via --duck-size
+                duck.style.objectFit = 'contain';
+                duck.style.filter = 'drop-shadow(0 2px 6px rgba(0,0,0,0.3))';
+                duck.onerror = function() {
+                    // Gambar gagal dimuat (mis. koneksi HP lambat / hotlink diblokir) —
+                    // tampilkan emoji bebek sebagai pengganti, JANGAN disembunyikan,
+                    // supaya arena balap tetap terlihat ada bebeknya.
+                    const fallback = document.createElement('div');
+                    fallback.id = `duck-${player.id}`;
+                    fallback.className = 'duck z-10 transition-all duration-300 flex items-center justify-center leading-none select-none';
+                    fallback.style.fontSize = 'var(--duck-size)';
+                    fallback.style.filter = 'drop-shadow(0 2px 6px rgba(0,0,0,0.3))';
+                    fallback.textContent = player.emoji || '🦆';
+                    this.replaceWith(fallback);
+                };
+                
+                // Create name label (positioned below duck)
+                const nameLabel = document.createElement('div');
+                nameLabel.className = 'mt-1 text-xs font-bold text-blue-800 bg-white bg-opacity-90 px-2 py-1 rounded shadow-sm whitespace-nowrap';
+                nameLabel.textContent = `Pemain ${player.id}`;
+                
+                duckContainer.appendChild(duck);
+                duckContainer.appendChild(nameLabel);
+                trackContainer.appendChild(duckContainer);
+            });
+        }
+
+
+
+
+        // Player input state management for concurrent handling
+        const playerInputStates = {};
+
+        // Initialize player input states
+        function initializePlayerInputStates() {
+            gameState.players.forEach(player => {
+                playerInputStates[player.id] = {
+                    currentInput: '',
+                    isProcessing: false,
+                    hasAnswered: false,
+                    lastInputTime: 0,
+                    inputBuffer: []
+                };
+            });
+        }
+
+        // Simple answer tracking per player (no button state changes)
+        const playerAnswerTracking = {};
+
+        // Initialize answer tracking for all players
+        function initializeAnswerTracking() {
+            gameState.players.forEach(player => {
+                playerAnswerTracking[player.id] = {
+                    hasAnsweredCurrentQuestion: false,
+                    lastAnswerTime: 0,
+                    cooldownPeriod: 1000 // 1 second cooldown between answers
+                };
+            });
+        }
+
+        // Keypad functions with improved concurrency handling
+        function addDigit(playerId, digit) {
+            // Block input if game has ended
+            if (gameState.gameEnded) {
+                return;
+            }
+
+            // Prevent rapid duplicate inputs
+            const now = Date.now();
+            const playerState = playerInputStates[playerId];
+            
+            if (now - playerState.lastInputTime < 50) { // 50ms debounce
+                return;
+            }
+            
+            playerState.lastInputTime = now;
+            
+            // Use requestAnimationFrame for smooth UI updates
+            requestAnimationFrame(() => {
+                const display = document.getElementById(`answer-display-${playerId}`);
+                if (!display) return;
+                
+                let currentValue = playerState.currentInput;
+                
+                // Initialize if empty or showing placeholder
+                if (!currentValue || display.querySelector('.text-gray-400')) {
+                    currentValue = '';
+                }
+                
+                // Limit to 3 digits max (for answers up to 999)
+                if (currentValue.length < 3) {
+                    currentValue += digit.toString();
+                    playerState.currentInput = currentValue;
+                    
+                    // Update display with visual feedback
+                    display.innerHTML = `<span class="text-purple-800 font-bold">${currentValue}</span>`;
+                    
+                    // Add brief highlight effect for feedback
+                    display.style.transform = 'scale(1.05)';
+                    setTimeout(() => {
+                        display.style.transform = 'scale(1)';
+                    }, 100);
+                }
+            });
+        }
+
+        function clearAnswer(playerId) {
+            // Block input if game has ended
+            if (gameState.gameEnded) {
+                return;
+            }
+            
+            const playerState = playerInputStates[playerId];
+            playerState.currentInput = '';
+            
+            requestAnimationFrame(() => {
+                const display = document.getElementById(`answer-display-${playerId}`);
+                if (!display) return;
+                
+                display.innerHTML = '<span class="text-gray-400 text-sm">Jawaban</span>';
+                display.className = "answer-display bg-white p-2 border-2 border-purple-300 rounded text-center font-bold mb-2 flex items-center justify-center transition-all duration-200";
+                
+                // Add clear animation feedback
+                display.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    display.style.transform = 'scale(1)';
+                }, 150);
+            });
+        }
+
+        function submitAnswer(playerId) {
+            // Block input if game has ended
+            if (gameState.gameEnded) {
+                return;
+            }
+            
+            const playerState = playerInputStates[playerId];
+            const answerTracker = playerAnswerTracking[playerId];
+            const currentTime = Date.now();
+            
+            // Check cooldown period to prevent rapid clicking
+            if (currentTime - answerTracker.lastAnswerTime < answerTracker.cooldownPeriod) {
+                // Show visual feedback for cooldown
+                const display = document.getElementById(`answer-display-${playerId}`);
+                if (display) {
+                    display.style.borderColor = '#f59e0b';
+                    setTimeout(() => {
+                        display.style.borderColor = '#a855f7';
+                    }, 300);
+                }
+                return;
+            }
+            
+            // Prevent double submission for same question
+            if (answerTracker.hasAnsweredCurrentQuestion) {
+                return;
+            }
+            
+            const currentInput = playerState.currentInput;
+            
+            if (!currentInput || currentInput === '') {
+                // Show feedback for empty submission
+                const display = document.getElementById(`answer-display-${playerId}`);
+                if (display) {
+                    display.style.borderColor = '#ef4444';
+                    setTimeout(() => {
+                        display.style.borderColor = '#a855f7';
+                    }, 300);
+                }
+                return;
+            }
+            
+            // Mark as answered for current question
+            answerTracker.hasAnsweredCurrentQuestion = true;
+            answerTracker.lastAnswerTime = currentTime;
+            playerState.isProcessing = true;
+            
+            const playerAnswer = parseInt(currentInput);
+            
+            // Add submission animation
+            const display = document.getElementById(`answer-display-${playerId}`);
+            if (display) {
+                display.style.transform = 'scale(1.1)';
+                display.style.borderWidth = '3px';
+                setTimeout(() => {
+                    display.style.transform = 'scale(1)';
+                    display.style.borderWidth = '2px';
+                }, 200);
+            }
+            
+            // Process answer asynchronously to maintain responsiveness
+            setTimeout(() => {
+                checkAnswerAndMoveDuck(playerId, playerAnswer);
+                playerState.isProcessing = false;
+            }, 100);
+        }
+
+        // Check answer and move duck
+        function checkAnswerAndMoveDuck(playerId, playerAnswer) {
+            const display = document.getElementById(`answer-display-${playerId}`);
+            
+            const questionData = gameState.quizQuestions.find(q => q.playerId === playerId);
+            if (!questionData) return;
+
+            if (!isNaN(playerAnswer)) {
+                if (playerAnswer === questionData.answer) {
+                    // Correct answer
+                    questionData.isCorrect = true;
+                    questionData.playerAnswer = playerAnswer;
+                    questionData.timeAnswered = Date.now();
+                    
+                    display.className = "answer-display bg-green-50 p-2 border-2 border-green-500 rounded text-center font-bold mb-2 flex items-center justify-center";
+                    
+                    // Play correct answer sound
+                    audioSystem.playCorrectSound();
+                    
+                    // Add visual sound indicator
+                    display.classList.add('sound-indicator');
+                    setTimeout(() => {
+                        display.classList.remove('sound-indicator');
+                    }, 300);
+                    
+                    // Update player speed and move duck
+                    const player = gameState.players.find(p => p.id === playerId);
+                    if (player) {
+                        player.correctAnswers++;
+                        player.speed = 1 + (player.correctAnswers * 0.5); // Speed increases with each correct answer
+                        moveDuckForCorrectAnswer(playerId);
+                        updateScoreDisplay(playerId);
+                        
+                        // Generate new question after 1 second (each player gets 10 questions)
+                        if (player.correctAnswers < gameState.maxRounds) {
+                            setTimeout(() => {
+                                generateNewQuestionForPlayer(playerId);
+                            }, 1000);
+                        }
+                    }
+                } else {
+                    // Wrong answer
+                    questionData.isCorrect = false;
+                    questionData.playerAnswer = playerAnswer;
+                    
+                    display.className = "answer-display bg-red-50 p-2 border-2 border-red-500 rounded text-center font-bold mb-2 flex items-center justify-center";
+                    
+                    // Play error sound
+                    audioSystem.playErrorSound();
+                    
+                    // Reduce player speed temporarily
+                    const player = gameState.players.find(p => p.id === playerId);
+                    if (player) {
+                        player.speed = Math.max(0.3, player.speed * 0.7); // Reduce speed but not below 0.3
+                    }
+
+                    // PENTING: reset input & flag jawaban supaya pemain BISA
+                    // mengetik & submit jawaban baru lagi (soal sama tetap tampil).
+                    // Tanpa ini, hasAnsweredCurrentQuestion tetap true selamanya
+                    // dan tombol GO pemain ini "mati" diam-diam setelah 1x salah.
+                    setTimeout(() => {
+                        if (playerInputStates[playerId]) {
+                            playerInputStates[playerId].currentInput = '';
+                            playerInputStates[playerId].isProcessing = false;
+                        }
+                        if (playerAnswerTracking[playerId]) {
+                            playerAnswerTracking[playerId].hasAnsweredCurrentQuestion = false;
+                        }
+                        if (display) {
+                            display.innerHTML = '<span class="text-gray-400 text-sm">Jawaban</span>';
+                            display.className = "answer-display bg-white p-2 border-2 border-purple-300 rounded text-center font-bold mb-2 flex items-center justify-center transition-all duration-200";
+                            display.style.transform = 'scale(1)';
+                            display.style.borderWidth = '2px';
+                            display.style.borderColor = '#a855f7';
+                        }
+                    }, 700); // beri jeda agar warna merah sempat terlihat pemain
+                }
+            }
+        }
+
+        // Generate new question for specific player
+        function generateNewQuestionForPlayer(playerId) {
+            const mathQuestion = generateMathQuestion();
+            
+            // Update question data
+            const questionIndex = gameState.quizQuestions.findIndex(q => q.playerId === playerId);
+            if (questionIndex !== -1) {
+                gameState.quizQuestions[questionIndex] = {
+                    playerId: playerId,
+                    question: mathQuestion.question,
+                    answer: mathQuestion.answer,
+                    playerAnswer: null,
+                    isCorrect: false,
+                    timeAnswered: null
+                };
+            }
+            
+            // Reset player input state completely
+            if (playerInputStates[playerId]) {
+                playerInputStates[playerId].currentInput = '';
+                playerInputStates[playerId].isProcessing = false;
+                playerInputStates[playerId].hasAnswered = false;
+            }
+            
+            // Reset answer tracking for new question
+            if (playerAnswerTracking[playerId]) {
+                playerAnswerTracking[playerId].hasAnsweredCurrentQuestion = false;
+            }
+            
+            // Update UI
+            const questionElement = document.querySelector(`#quizBoard > div:nth-child(${playerId}) .quiz-question`);
+            const display = document.getElementById(`answer-display-${playerId}`);
+            
+            if (questionElement) {
+                questionElement.textContent = `${mathQuestion.question} = ?`;
+            }
+            
+            // Reset answer display
+            if (display) {
+                display.innerHTML = '<span class="text-gray-400 text-sm">Jawaban</span>';
+                display.className = "answer-display bg-white p-2 border-2 border-purple-300 rounded text-center font-bold mb-2 flex items-center justify-center transition-all duration-200";
+                display.style.transform = 'scale(1)';
+                display.style.borderWidth = '2px';
+                display.style.borderColor = '#a855f7';
+            }
+        }
+
+        // Update score display
+        function updateScoreDisplay(playerId) {
+            const player = gameState.players.find(p => p.id === playerId);
+            const scoreDisplay = document.getElementById(`score-display-${playerId}`);
+            if (scoreDisplay && player) {
+                scoreDisplay.textContent = `Benar: ${player.correctAnswers}`;
+            }
+        }
+
+        // Move duck based on correct answer
+        function moveDuckForCorrectAnswer(playerId) {
+            const duckContainer = document.getElementById(`duck-container-${playerId}`);
+            const duck = document.getElementById(`duck-${playerId}`);
+            const player = gameState.players.find(p => p.id === playerId);
+            
+            if (duckContainer && duck && player) {
+                // Calculate finish line position (where the flag is)
+                const trackWidth = duckContainer.parentElement.offsetWidth;
+                const finishLinePosition = trackWidth - 120; // Position just before the flag (🏁)
+                const moveDistance = finishLinePosition / gameState.maxRounds; // Divide track into 10 equal segments
+                
+                // Move from current position to next position (truly cumulative)
+                const newPosition = Math.min(player.position + moveDistance, finishLinePosition);
+                
+                // Animate the movement from current position to new position
+                duckContainer.style.transition = 'transform 0.5s ease-in-out';
+                duckContainer.style.transform = `translateX(${newPosition}px)`;
+                
+                // Update player position after animation
+                player.position = newPosition;
+                
+                // Add celebration animation
+                setTimeout(() => {
+                    duck.style.animation = 'bounce 0.5s ease-in-out 3';
+                    setTimeout(() => {
+                        duck.style.animation = '';
+                    }, 1500);
+                }, 100);
+                
+                // Update progress
+                updateGameProgress();
+                
+                // Check if player completed 10 questions first (reached finish line)
+                if (player.correctAnswers >= gameState.maxRounds && !gameState.winner) {
+                    gameState.winner = player;
+                    endQuizRace();
+                }
+            }
+        }
+
+        // Update game progress
+        function updateGameProgress() {
+            // Calculate total correct answers across all players
+            const totalCorrectAnswers = gameState.players.reduce((sum, player) => sum + player.correctAnswers, 0);
+            const maxPossibleAnswers = gameState.players.length * gameState.maxRounds;
+            
+            const currentRoundDisplay = document.getElementById('currentRoundDisplay');
+            const progressBar = document.getElementById('progressBar');
+            
+            if (currentRoundDisplay) {
+                currentRoundDisplay.textContent = totalCorrectAnswers;
+            }
+            
+            if (progressBar) {
+                const progressPercentage = (totalCorrectAnswers / maxPossibleAnswers) * 100;
+                progressBar.style.width = `${progressPercentage}%`;
+            }
+        }
+
+        // Determine winner by score (most correct answers)
+        function determineWinnerByScore() {
+            if (gameState.winner) return; // Already have a winner
+            
+            // Find player with most correct answers
+            let leadingPlayer = gameState.players[0];
+            gameState.players.forEach(player => {
+                if (player.correctAnswers > leadingPlayer.correctAnswers) {
+                    leadingPlayer = player;
+                }
+            });
+            
+            gameState.winner = leadingPlayer;
+            endQuizRace();
+        }
+
+        // End quiz-based race
+        function endQuizRace() {
+            if (gameState.winner) {
+                // Set game as ended to block further input
+                gameState.gameEnded = true;
+                
+                const winnerDuck = document.getElementById(`duck-${gameState.winner.id}`);
+                winnerDuck.classList.add('winner-animation');
+
+                // Play duck sound untuk kemenangan
+                audioSystem.playDuckSound();
+                
+                // Play additional celebration sounds
+                setTimeout(() => {
+                    audioSystem.playCorrectSound();
+                }, 600);
+                setTimeout(() => {
+                    audioSystem.playCorrectSound();
+                }, 1200);
+
+                const winMessage = gameState.winner.correctAnswers >= gameState.maxRounds ? 
+                    `Pemain ${gameState.winner.id} Menang! Tercepat menyelesaikan 10 soal!` :
+                    `Pemain ${gameState.winner.id} Menang dengan ${gameState.winner.correctAnswers} jawaban benar!`;
+
+                document.getElementById('winnerText').textContent = winMessage;
+                document.getElementById('winnerDisplay').classList.remove('hidden');
+                
+                // Disable all keypad buttons visually
+                disableAllKeypads();
+            }
+        }
+        
+        // Disable all keypad buttons
+        function disableAllKeypads() {
+            const allButtons = document.querySelectorAll('.keypad-btn');
+            allButtons.forEach(button => {
+                button.classList.add('opacity-50', 'cursor-not-allowed');
+                button.disabled = true;
+            });
+        }
+        
+        // Enable all keypad buttons
+        function enableAllKeypads() {
+            const allButtons = document.querySelectorAll('.keypad-btn');
+            allButtons.forEach(button => {
+                button.classList.remove('opacity-50', 'cursor-not-allowed');
+                button.disabled = false;
+                button.style.pointerEvents = 'auto';
+                button.style.backgroundColor = ''; // Reset any inline styles
+            });
+            
+            // Reset all player states
+            gameState.players.forEach(player => {
+                if (playerInputStates[player.id]) {
+                    playerInputStates[player.id].hasAnswered = false;
+                    playerInputStates[player.id].isProcessing = false;
+                    playerInputStates[player.id].currentInput = '';
+                }
+                if (playerAnswerTracking[player.id]) {
+                    playerAnswerTracking[player.id].hasAnsweredCurrentQuestion = false;
+                    playerAnswerTracking[player.id].lastAnswerTime = 0;
+                }
+            });
+        }
+
+        // Zoom functions
+        function zoomIn() {
+            if (zoomState.level < zoomState.max) {
+                zoomState.level = Math.min(zoomState.level + zoomState.step, zoomState.max);
+                applyZoom();
+            }
+        }
+
+        function zoomOut() {
+            if (zoomState.level > zoomState.min) {
+                zoomState.level = Math.max(zoomState.level - zoomState.step, zoomState.min);
+                applyZoom();
+            }
+        }
+
+        function applyZoom() {
+            const container = document.querySelector('.container');
+            const isAndroid = /Android/i.test(navigator.userAgent);
+            
+            // Gunakan CSS zoom untuk Android (lebih akurat untuk touch)
+            if (isAndroid) {
+                container.style.zoom = zoomState.level;
+                container.style.transform = '';
+            } else {
+                // Gunakan transform scale untuk desktop
+                container.style.transform = `scale(${zoomState.level})`;
+                container.style.transformOrigin = 'top center';
+                container.style.zoom = '';
+            }
+            
+            // Update zoom level display
+            const zoomDisplay = document.getElementById('zoomLevel');
+            zoomDisplay.textContent = `${Math.round(zoomState.level * 100)}%`;
+            
+            // Adjust body height to prevent scrolling issues
+            if (!isAndroid) {
+                document.body.style.height = `${100 / zoomState.level}%`;
+            }
+        }
+
+        // Fullscreen functions
+        function toggleFullscreen() {
+            if (!fullscreenState.isFullscreen) {
+                enterFullscreen();
+            } else {
+                exitFullscreen();
+            }
+        }
+
+        function enterFullscreen() {
+            const element = document.documentElement;
+            
+            if (element.requestFullscreen) {
+                element.requestFullscreen();
+            } else if (element.webkitRequestFullscreen) {
+                element.webkitRequestFullscreen();
+            } else if (element.msRequestFullscreen) {
+                element.msRequestFullscreen();
+            }
+        }
+
+        function exitFullscreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        }
+
+        function updateFullscreenButton() {
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
+            const closeFullscreenBtn = document.getElementById('closeFullscreenBtn');
+            
+            if (fullscreenState.isFullscreen) {
+                fullscreenBtn.classList.add('hidden');
+                closeFullscreenBtn.classList.remove('hidden');
+                closeFullscreenBtn.title = 'Keluar dari Fullscreen';
+            } else {
+                fullscreenBtn.classList.remove('hidden');
+                closeFullscreenBtn.classList.add('hidden');
+                fullscreenBtn.title = 'Masuk Fullscreen';
+            }
+        }
+
+        // Listen for fullscreen changes
+        function handleFullscreenChange() {
+            fullscreenState.isFullscreen = !!(document.fullscreenElement || 
+                                            document.webkitFullscreenElement || 
+                                            document.msFullscreenElement);
+            updateFullscreenButton();
+        }
+
+        // Setup modal functions
+        function showSetupModal() {
+            document.getElementById('setupModal').classList.remove('hidden');
+            updateDifficultyInfo();
+            setJumlahPemainSelection(gameSettings.jumlahPemain);
+        }
+
+        function setJumlahPemainSelection(jumlah) {
+            gameSettings.jumlahPemainPending = jumlah;
+            document.querySelectorAll('.jumlah-pemain-btn').forEach(btn => {
+                const isSelected = parseInt(btn.dataset.jumlah) === jumlah;
+                btn.classList.toggle('bg-blue-500', isSelected);
+                btn.classList.toggle('text-white', isSelected);
+                btn.classList.toggle('border-blue-500', isSelected);
+                btn.classList.toggle('text-blue-700', !isSelected);
+                btn.classList.toggle('border-blue-300', !isSelected);
+            });
+        }
+
+        function hideSetupModal() {
+            document.getElementById('setupModal').classList.add('hidden');
+        }
+
+        function updateDifficultyInfo() {
+            const kelas = parseInt(document.getElementById('kelasSelect').value);
+            const jenisSoal = document.getElementById('jenisSoalSelect').value;
+            const difficultyText = document.getElementById('difficultyText');
+            
+            let infoText = '';
+            
+            switch(kelas) {
+                case 1:
+                    infoText = 'Angka 1-10 untuk penjumlahan dan pengurangan';
+                    break;
+                case 2:
+                    infoText = 'Angka 1-20 untuk penjumlahan dan pengurangan';
+                    break;
+                case 3:
+                    infoText = 'Angka 1-30 untuk penjumlahan/pengurangan, 1-5 untuk perkalian';
+                    break;
+                case 4:
+                    infoText = 'Angka 1-50 untuk penjumlahan/pengurangan, 1-10 untuk perkalian';
+                    break;
+                case 5:
+                case 6:
+                case 7:
+                case 8:
+                case 9:
+                case 10:
+                case 11:
+                case 12:
+                    infoText = 'Angka 1-100 untuk penjumlahan/pengurangan, 1-10 untuk perkalian';
+                    break;
+            }
+            
+            difficultyText.textContent = infoText;
+        }
+
+        function updateAvailableOperations() {
+            const kelas = parseInt(document.getElementById('kelasSelect').value);
+            const jenisSoalSelect = document.getElementById('jenisSoalSelect');
+            const perkalianOption = jenisSoalSelect.querySelector('option[value="perkalian"]');
+            const pembagianOption = jenisSoalSelect.querySelector('option[value="pembagian"]');
+            
+            // Enable/disable operations based on class
+            if (kelas >= 3) {
+                perkalianOption.disabled = false;
+                perkalianOption.textContent = '✖️ Perkalian';
+            } else {
+                perkalianOption.disabled = true;
+                perkalianOption.textContent = '✖️ Perkalian (Kelas 3+)';
+            }
+            
+            if (kelas >= 4) {
+                pembagianOption.disabled = false;
+                pembagianOption.textContent = '➗ Pembagian';
+            } else {
+                pembagianOption.disabled = true;
+                pembagianOption.textContent = '➗ Pembagian (Kelas 4+)';
+            }
+            
+            // Reset to penjumlahan if current selection is not available
+            const currentValue = jenisSoalSelect.value;
+            if ((currentValue === 'perkalian' && kelas < 3) || 
+                (currentValue === 'pembagian' && kelas < 4)) {
+                jenisSoalSelect.value = 'penjumlahan';
+            }
+        }
+
+        function applyGameSettings() {
+            const kelas = parseInt(document.getElementById('kelasSelect').value);
+            const jenisSoal = document.getElementById('jenisSoalSelect').value;
+            const jumlahPemain = gameSettings.jumlahPemainPending || gameSettings.jumlahPemain || 4;
+            
+            gameSettings.kelas = kelas;
+            gameSettings.jenisSoal = jenisSoal;
+            gameSettings.jumlahPemain = jumlahPemain;
+            
+            // Update display
+            const operationNames = {
+                'penjumlahan': 'Penjumlahan',
+                'pengurangan': 'Pengurangan', 
+                'perkalian': 'Perkalian',
+                'pembagian': 'Pembagian'
+            };
+            
+            document.getElementById('currentSettings').textContent = 
+                `Kelas ${kelas} - ${operationNames[jenisSoal]} - ${jumlahPemain} Pemain`;
+            
+            hideSetupModal();
+            
+            // Bangun ulang daftar pemain sesuai jumlah yang dipilih
+            gameState.players = buildPlayers(jumlahPemain);
+            
+            document.getElementById('winnerDisplay').classList.add('hidden');
+            
+            // Rebuild race track (jumlah bebek berubah) & mulai kuis baru
+            createRaceTrack();
+            generateNewQuiz();
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            document.getElementById('resetBtn').addEventListener('click', resetGame);
+            document.getElementById('generateQuizBtn').addEventListener('click', generateNewQuiz);
+            document.getElementById('zoomInBtn').addEventListener('click', zoomIn);
+            document.getElementById('zoomOutBtn').addEventListener('click', zoomOut);
+            document.getElementById('fullscreenBtn').addEventListener('click', toggleFullscreen);
+            document.getElementById('closeFullscreenBtn').addEventListener('click', exitFullscreen);
+            
+            // Winner modal buttons
+            document.getElementById('playAgainBtn').addEventListener('click', playAgain);
+            document.getElementById('closeWinnerBtn').addEventListener('click', closeWinnerModal);
+            
+            // Setup modal event listeners
+            document.getElementById('startGameBtn').addEventListener('click', applyGameSettings);
+            document.getElementById('changeSettingsBtn').addEventListener('click', showSetupModal);
+            document.getElementById('kelasSelect').addEventListener('change', () => {
+                updateAvailableOperations();
+                updateDifficultyInfo();
+            });
+            document.getElementById('jenisSoalSelect').addEventListener('change', updateDifficultyInfo);
+            document.querySelectorAll('.jumlah-pemain-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    setJumlahPemainSelection(parseInt(btn.dataset.jumlah));
+                });
+            });
+            
+            // Fullscreen change listeners
+            document.addEventListener('fullscreenchange', handleFullscreenChange);
+            document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+            document.addEventListener('msfullscreenchange', handleFullscreenChange);
+        }
+
+        // Generate new quiz (Start new game session)
+        function generateNewQuiz() {
+            // Reset everything for new game session
+            gameState.winner = null;
+            gameState.gameStarted = true;
+            gameState.gameEnded = false;
+            
+            // Reset player input states
+            initializePlayerInputStates();
+            initializeAnswerTracking();
+            
+            // Reset all players
+            gameState.players.forEach(player => {
+                player.position = 0;
+                player.correctAnswers = 0;
+                player.speed = 1;
+                const duckContainer = document.getElementById(`duck-container-${player.id}`);
+                const duck = document.getElementById(`duck-${player.id}`);
+                if (duckContainer) {
+                    duckContainer.style.transform = 'translateX(0px)';
+                    duckContainer.style.transition = 'transform 0.5s ease-in-out';
+                }
+                if (duck) {
+                    duck.classList.remove('winner-animation');
+                    duck.style.animation = '';
+                }
+            });
+            
+            createQuizBoard();
+            updateGameProgress();
+            document.getElementById('quizResults').classList.add('hidden');
+            document.getElementById('winnerDisplay').classList.add('hidden');
+            
+            // Re-enable all keypads
+            enableAllKeypads();
+        }
+        
+        // Play again function
+        function playAgain() {
+            generateNewQuiz();
+        }
+        
+        // Close winner modal
+        function closeWinnerModal() {
+            document.getElementById('winnerDisplay').classList.add('hidden');
+        }
+
+
+
+
+
+
+
+        // Reset game
+        function resetGame() {
+            clearInterval(gameState.raceInterval);
+            gameState.isRacing = false;
+            gameState.winner = null;
+            gameState.gameStarted = false;
+            gameState.gameEnded = false;
+            
+            // Reset player input states
+            initializePlayerInputStates();
+            initializeAnswerTracking();
+            
+            document.getElementById('winnerDisplay').classList.add('hidden');
+
+            // Reset duck positions and player stats
+            gameState.players.forEach(player => {
+                player.position = 0;
+                player.speed = 1;
+                player.correctAnswers = 0;
+                const duckContainer = document.getElementById(`duck-container-${player.id}`);
+                const duck = document.getElementById(`duck-${player.id}`);
+                if (duckContainer) {
+                    duckContainer.style.transform = 'translateX(0px)';
+                    duckContainer.style.transition = 'transform 0.5s ease-in-out';
+                }
+                if (duck) {
+                    duck.classList.remove('winner-animation');
+                    duck.style.animation = '';
+                }
+            });
+
+            // Reset quiz and progress
+            createQuizBoard();
+            updateGameProgress();
+            document.getElementById('quizResults').classList.add('hidden');
+            
+            // Re-enable all keypads
+            enableAllKeypads();
+        }
+
+
+
+        // Element SDK configuration
+        async function onConfigChange(config) {
+            const gameTitle = document.getElementById('gameTitle');
+            const startBtn = document.getElementById('startBtn');
+            const resetBtn = document.getElementById('resetBtn');
+
+            if (gameTitle) {
+                gameTitle.textContent = config.game_title || defaultConfig.game_title;
+            }
+            if (startBtn) {
+                startBtn.innerHTML = config.start_button_text || defaultConfig.start_button_text;
+            }
+            if (resetBtn) {
+                resetBtn.innerHTML = config.reset_button_text || defaultConfig.reset_button_text;
+            }
+        }
+
+        function mapToCapabilities(config) {
+            return {
+                recolorables: [],
+                borderables: [],
+                fontEditable: undefined,
+                fontSizeable: undefined
+            };
+        }
+
+        function mapToEditPanelValues(config) {
+            return new Map([
+                ["game_title", config.game_title || defaultConfig.game_title],
+                ["start_button_text", config.start_button_text || defaultConfig.start_button_text],
+                ["reset_button_text", config.reset_button_text || defaultConfig.reset_button_text]
+            ]);
+        }
+
+        // =====================================================
+        //  MULTITOUCH HANDLERS
+        //  Setiap pemain bisa menyentuh tombol secara bersamaan
+        //  tanpa saling mengganggu (concurrent touch isolation)
+        // =====================================================
+
+        // Mencegah event click ganda setelah touchstart
+        // (beberapa browser tetap menembakkan "click" sintetis setelah
+        // touchstart meski preventDefault() dipanggil, jadi kita pasang
+        // flag waktu singkat agar handler onclick tahu untuk diam)
+        //
+        // PENTING: guard ini disimpan PER PEMAIN (bukan satu variabel
+        // global), supaya sentuhan Pemain A di IFP tidak ikut menahan/
+        // "memakan" event click Pemain B yang menekan tombolnya sendiri
+        // dalam rentang waktu yang sama (kejadian umum di layar sentuh
+        // besar dengan banyak pemain menekan hampir bersamaan).
+        const lastTouchActionTimeByPlayer = {};
+        const DOUBLE_FIRE_GUARD_MS = 500;
+
+        function preventDoubleFire(event, playerId) {
+            event.stopPropagation();
+            lastTouchActionTimeByPlayer[playerId] = Date.now();
+            // Hanya preventDefault bila bukan passive listener
+            if (!event.cancelable) return;
+            event.preventDefault();
+        }
+
+        function wasHandledByTouch(playerId) {
+            const last = lastTouchActionTimeByPlayer[playerId] || 0;
+            return (Date.now() - last) < DOUBLE_FIRE_GUARD_MS;
+        }
+
+        function touchBtn(event, playerId, digit) {
+            preventDoubleFire(event, playerId);
+            addDigit(playerId, digit);
+        }
+
+        function touchClear(event, playerId) {
+            preventDoubleFire(event, playerId);
+            clearAnswer(playerId);
+        }
+
+        function touchSubmit(event, playerId) {
+            preventDoubleFire(event, playerId);
+            submitAnswer(playerId);
+        }
+
+        // Handler untuk "onclick" — dipakai mouse/trackpad/keyboard.
+        // Jika aksi ini baru saja ditangani oleh touchstart PEMAIN YANG SAMA,
+        // abaikan supaya addDigit/clearAnswer/submitAnswer tidak terpanggil 2x.
+        function clickBtn(event, playerId, digit) {
+            if (wasHandledByTouch(playerId)) return;
+            addDigit(playerId, digit);
+        }
+
+        function clickClear(event, playerId) {
+            if (wasHandledByTouch(playerId)) return;
+            clearAnswer(playerId);
+        }
+
+        function clickSubmit(event, playerId) {
+            if (wasHandledByTouch(playerId)) return;
+            submitAnswer(playerId);
+        }
+
+        // =====================================================
+        //  RESIZE HANDLER — rebuild track saat layar berubah
+        //  (rotasi HP, resize window) agar posisi bebek tepat
+        // =====================================================
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                // Reset posisi bebek agar sesuai ukuran layar baru
+                createRaceTrack();
+                // Kembalikan posisi pemain yang sudah maju
+                gameState.players.forEach(player => {
+                    const duckContainer = document.getElementById(`duck-container-${player.id}`);
+                    if (duckContainer && player.position > 0) {
+                        const trackWidth = duckContainer.parentElement.offsetWidth;
+                        const finishLine = trackWidth - 120;
+                        const newPos = (player.correctAnswers / gameState.maxRounds) * finishLine;
+                        player.position = Math.min(newPos, finishLine);
+                        duckContainer.style.transition = 'none';
+                        duckContainer.style.transform = `translateX(${player.position}px)`;
+                    }
+                });
+            }, 200);
+        });
+
+        // =====================================================
+        //  PREVENT PINCH-ZOOM di area game (biarkan scroll)
+        // =====================================================
+        document.addEventListener('touchmove', function(e) {
+            if (e.touches.length > 1) e.preventDefault();
+        }, { passive: false });
+
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            initGame();
+            
+            // Initialize audio system
+            audioSystem.init();
+            
+            // Show setup modal on first load
+            showSetupModal();
+            updateAvailableOperations();
+            
+            // Initialize Element SDK
+            if (window.elementSdk) {
+                window.elementSdk.init({
+                    defaultConfig,
+                    onConfigChange,
+                    mapToCapabilities,
+                    mapToEditPanelValues
+                });
+            }
+        });
+
+        // Enable audio context on first user interaction (required by browsers)
+        document.addEventListener('touchstart', () => {
+            if (audioSystem.context && audioSystem.context.state === 'suspended') {
+                audioSystem.context.resume();
+            }
+        }, { once: true, passive: true });
+        document.addEventListener('click', () => {
+            if (audioSystem.context && audioSystem.context.state === 'suspended') {
+                audioSystem.context.resume();
+            }
+        }, { once: true });
+    </script>
+ </body>
+</html>
