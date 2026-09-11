@@ -8,13 +8,13 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
         /* ======================================================
-           CSS CUSTOM PROPERTIES — satu sumber kebenaran ukuran
-           Berubah otomatis sesuai layar (HP, Laptop, 75 inch)
+           CSS CUSTOM PROPERTIES — nilai default (di-override JS)
+           Deteksi OTOMATIS: HP / Tablet / Laptop / IFP 75"
            ====================================================== */
         :root {
             --duck-size:            50px;
-            --track-height:         300px;
-            --track-gap:            58px;   /* jarak vertikal antar bebek */
+            --track-height:         22vh;
+            --track-gap:            58px;
             --btn-min-h:            44px;
             --btn-font:             15px;
             --btn-gap:              4px;
@@ -24,118 +24,42 @@
             --answer-min-h:         38px;
             --answer-font:          1rem;
             --card-padding:         12px;
-            --game-title-size:      clamp(1.6rem, 3.5vw, 3.2rem);
+            --game-title-size:      clamp(1.4rem, 3vw, 3rem);
             --finish-icon-size:     3.5rem;
         }
 
-        /* ── HP portrait (≤ 639px) ── */
-        @media (max-width: 639px) {
-            :root {
-                --duck-size:        30px;
-                --track-height:     190px;
-                --track-gap:        44px;
-                --btn-min-h:        38px;
-                --btn-font:         13px;
-                --btn-gap:          3px;
-                --keypad-max-w:     100%;
-                --quiz-q-font:      0.85rem;
-                --quiz-h4-font:     0.75rem;
-                --answer-min-h:     32px;
-                --answer-font:      0.85rem;
-                --card-padding:     8px;
-                --game-title-size:  1.5rem;
-                --finish-icon-size: 2rem;
-            }
+        /* Badge perangkat terdeteksi */
+        #device-badge {
+            position: fixed;
+            top: 10px; right: 10px;
+            background: rgba(30,100,180,0.92);
+            color: white;
+            font-size: 0.78rem;
+            font-family: sans-serif;
+            font-weight: bold;
+            padding: 5px 13px;
+            border-radius: 20px;
+            z-index: 9999;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+            pointer-events: none;
+            opacity: 1;
+            transition: opacity 1s ease;
         }
-
-        /* ── HP landscape / small tablet (640–767px) ── */
-        @media (min-width: 640px) and (max-width: 767px) {
-            :root {
-                --duck-size:        38px;
-                --track-height:     220px;
-                --track-gap:        50px;
-                --btn-min-h:        40px;
-                --btn-font:         13px;
-                --keypad-max-w:     160px;
-                --quiz-q-font:      0.9rem;
-                --game-title-size:  1.9rem;
-                --finish-icon-size: 2.5rem;
-            }
-        }
-
-        /* ── Tablet (768–1023px) ── */
-        @media (min-width: 768px) and (max-width: 1023px) {
-            :root {
-                --duck-size:        44px;
-                --track-height:     260px;
-                --track-gap:        55px;
-                --btn-min-h:        42px;
-                --btn-font:         14px;
-                --keypad-max-w:     170px;
-                --game-title-size:  2.4rem;
-                --finish-icon-size: 3rem;
-            }
-        }
-
-        /* ── Laptop / Desktop (1024–1919px) ── */
-        @media (min-width: 1024px) and (max-width: 1919px) {
-            :root {
-                --duck-size:        55px;
-                --track-height:     330px;
-                --track-gap:        68px;
-                --btn-min-h:        46px;
-                --btn-font:         15px;
-                --keypad-max-w:     185px;
-                --quiz-q-font:      1.05rem;
-                --answer-min-h:     40px;
-                --card-padding:     14px;
-                --game-title-size:  3rem;
-                --finish-icon-size: 4rem;
-            }
-        }
-
-        /* ── Layar 75 inch / TV / Proyektor (≥ 1920px) ── */
-        @media (min-width: 1920px) {
-            :root {
-                --duck-size:        90px;
-                --track-height:     500px;
-                --track-gap:        110px;
-                --btn-min-h:        72px;
-                --btn-font:         22px;
-                --btn-gap:          6px;
-                --keypad-max-w:     280px;
-                --quiz-q-font:      1.5rem;
-                --quiz-h4-font:     1.2rem;
-                --answer-min-h:     60px;
-                --answer-font:      1.5rem;
-                --card-padding:     20px;
-                --game-title-size:  4.5rem;
-                --finish-icon-size: 6rem;
-            }
-        }
-
-        /* ── Landscape sangat pendek (HP miring) ── */
-        @media (max-height: 500px) and (orientation: landscape) {
-            :root {
-                --duck-size:        26px;
-                --track-height:     130px;
-                --track-gap:        36px;
-                --btn-min-h:        30px;
-                --btn-font:         11px;
-                --card-padding:     6px;
-                --game-title-size:  1.1rem;
-                --finish-icon-size: 1.5rem;
-            }
-        }
+        #device-badge.fade-out { opacity: 0; }
 
         /* ================================================
            BASE STYLES menggunakan custom properties
            ================================================ */
         *, *::before, *::after { box-sizing: border-box; }
 
+        html { height: 100%; overflow: hidden; }
+
         body {
             -webkit-text-size-adjust: 100%;
             overscroll-behavior: none;
+            height: 100vh;
+            overflow: hidden;
+            box-sizing: border-box;
         }
 
         /* Ukuran bebek dari CSS variable → dipakai juga di JS */
@@ -230,9 +154,6 @@
         @media (max-width: 639px) {
             #quizBoard { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         }
-        @media (min-width: 1920px) {
-            #quizBoard { gap: 18px; }
-        }
 
         /* ── Isolasi sentuhan antar area pemain ── */
         .player-zone {
@@ -292,7 +213,10 @@
   <script src="/_sdk/fbe2ebfd64647c54.data_sdk.js" type="text/javascript" integrity="sha512-vkTX6CfvpHc3WbjK+tFJCaDuw4ERA4aEV/e5/7+MMJPMTF4RJYCI6CAwJBT/gtDW+dba4uLSsPUgDjVDHWtgUQ=="></script>
  </head>
  <body class="h-full bg-gradient-to-b from-sky-200 to-green-200 font-sans">
-  <div class="container mx-auto px-4 py-6 h-full flex flex-col"><!-- Setup Modal -->
+  <!-- Badge deteksi perangkat otomatis -->
+  <div id="device-badge">🔍 Mendeteksi perangkat...</div>
+
+  <div class="container mx-auto px-2 py-2 h-full flex flex-col overflow-hidden" style="max-height:100vh;"><!-- Setup Modal -->
    <div id="setupModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50" style="backdrop-filter: blur(5px);">
     <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4 shadow-2xl">
      <div class="text-center mb-6">
@@ -324,11 +248,11 @@
      </div>
     </div>
    </div><!-- Header -->
-   <header class="text-center mb-6">
-    <h1 id="gameTitle" class="game-title text-4xl md:text-5xl font-bold text-blue-800 mb-2">🦆 Game Balap Bebek 🦆</h1>
-    <p class="text-lg text-blue-600">Siapa bebek tercepat hari ini?</p>
+   <header class="text-center mb-1 flex-shrink-0">
+    <h1 id="gameTitle" class="game-title font-bold text-blue-800 mb-0.5">🦆 Game Balap Bebek 🦆</h1>
+    <p class="text-sm text-blue-600">Siapa bebek tercepat hari ini?</p>
    </header><!-- Race Track -->
-   <div class="bg-blue-100 rounded-lg p-3 md:p-5 mb-3 relative overflow-hidden">
+   <div class="bg-blue-100 rounded-lg p-2 mb-2 relative overflow-hidden flex-shrink-0">
     <div class="finish-line absolute right-0 top-0 w-8 h-full opacity-70"></div><!-- Track Header -->
     <div class="text-center mb-2 md:mb-3">
      <h3 class="text-xl md:text-3xl font-bold text-blue-800">🏁 Arena Balap Bebek 🏁</h3>
@@ -353,7 +277,7 @@
      </div>
     </div>
    </div><!-- Quiz Board -->
-   <div class="bg-white rounded-lg shadow-lg p-2 mb-3 w-full">
+   <div class="bg-white rounded-lg shadow-lg p-2 mb-1 w-full flex-1 min-h-0 overflow-y-auto">
     <h3 class="text-base md:text-lg font-bold text-center mb-2 text-gray-800">🧮 Papan Soal Matematika</h3>
     <div id="quizBoard"><!-- Quiz questions will be generated here by JS -->
     </div>
@@ -1704,8 +1628,142 @@
             if (e.touches.length > 1) e.preventDefault();
         }, { passive: false });
 
+        // ============================================================
+        //  DETEKSI PERANGKAT OTOMATIS
+        //  HP / Tablet / Laptop / IFP 75" — tanpa media query
+        //  Berjalan sekali saat load, dan ulang saat orientasi berubah
+        // ============================================================
+        function detectDevice() {
+            const W   = window.screen.width;
+            const H   = window.screen.height;
+            const dpr = window.devicePixelRatio || 1;
+            const vw  = window.innerWidth;
+            const vh  = window.innerHeight;
+
+            // Estimasi diagonal fisik layar dalam inci
+            const ppi   = 96 * dpr;
+            const diagIn = Math.sqrt((W/ppi)**2 + (H/ppi)**2);
+
+            const isTouch  = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+            const ua       = navigator.userAgent.toLowerCase();
+            const isMobile = /android|iphone|ipad|ipod|mobile/.test(ua);
+            const isTablet = !isMobile && isTouch && diagIn >= 7 && diagIn < 14;
+            const isIFP    = diagIn >= 35 || W >= 3840 || (vw >= 1920 && diagIn >= 20);
+
+            let label, p;
+
+            if (isIFP) {
+                label = '📺 IFP / Layar Besar';
+                p = {
+                    duckSize:      '90px',
+                    trackHeight:   '28vh',
+                    btnMinH:       '80px',
+                    btnFont:       '24px',
+                    btnGap:        '8px',
+                    keypadMaxW:    '300px',
+                    quizQFont:     '1.6rem',
+                    quizH4Font:    '1.3rem',
+                    answerMinH:    '68px',
+                    answerFont:    '1.6rem',
+                    cardPadding:   '22px',
+                    titleSize:     '4.5rem',
+                    finishIcon:    '6rem',
+                    baseFontPx:    22,
+                };
+            } else if (isMobile && diagIn < 7) {
+                label = '📱 HP / Smartphone';
+                p = {
+                    duckSize:      '28px',
+                    trackHeight:   '18vh',
+                    btnMinH:       '36px',
+                    btnFont:       '12px',
+                    btnGap:        '3px',
+                    keypadMaxW:    '100%',
+                    quizQFont:     '0.82rem',
+                    quizH4Font:    '0.72rem',
+                    answerMinH:    '30px',
+                    answerFont:    '0.82rem',
+                    cardPadding:   '7px',
+                    titleSize:     '1.4rem',
+                    finishIcon:    '1.8rem',
+                    baseFontPx:    13,
+                };
+            } else if (isTablet) {
+                label = '📱 Tablet';
+                p = {
+                    duckSize:      '42px',
+                    trackHeight:   '20vh',
+                    btnMinH:       '42px',
+                    btnFont:       '14px',
+                    btnGap:        '4px',
+                    keypadMaxW:    '170px',
+                    quizQFont:     '0.92rem',
+                    quizH4Font:    '0.8rem',
+                    answerMinH:    '36px',
+                    answerFont:    '0.92rem',
+                    cardPadding:   '10px',
+                    titleSize:     '2.2rem',
+                    finishIcon:    '2.8rem',
+                    baseFontPx:    15,
+                };
+            } else {
+                label = '💻 Laptop / Desktop';
+                p = {
+                    duckSize:      '52px',
+                    trackHeight:   '22vh',
+                    btnMinH:       '44px',
+                    btnFont:       '15px',
+                    btnGap:        '4px',
+                    keypadMaxW:    '185px',
+                    quizQFont:     '1rem',
+                    quizH4Font:    '0.85rem',
+                    answerMinH:    '38px',
+                    answerFont:    '1rem',
+                    cardPadding:   '12px',
+                    titleSize:     '2.8rem',
+                    finishIcon:    '3.5rem',
+                    baseFontPx:    16,
+                };
+            }
+
+            // Terapkan ke CSS variables
+            const r = document.documentElement;
+            r.style.setProperty('--duck-size',         p.duckSize);
+            r.style.setProperty('--track-height',      p.trackHeight);
+            r.style.setProperty('--btn-min-h',         p.btnMinH);
+            r.style.setProperty('--btn-font',          p.btnFont);
+            r.style.setProperty('--btn-gap',           p.btnGap);
+            r.style.setProperty('--keypad-max-w',      p.keypadMaxW);
+            r.style.setProperty('--quiz-q-font',       p.quizQFont);
+            r.style.setProperty('--quiz-h4-font',      p.quizH4Font);
+            r.style.setProperty('--answer-min-h',      p.answerMinH);
+            r.style.setProperty('--answer-font',       p.answerFont);
+            r.style.setProperty('--card-padding',      p.cardPadding);
+            r.style.setProperty('--game-title-size',   p.titleSize);
+            r.style.setProperty('--finish-icon-size',  p.finishIcon);
+            r.style.fontSize = p.baseFontPx + 'px';
+
+            // Tampilkan badge, fade-out setelah 3 detik
+            const badge = document.getElementById('device-badge');
+            if (badge) {
+                badge.textContent = `✅ ${label} (${Math.round(vw)}×${Math.round(vh)}px, diag≈${diagIn.toFixed(0)}")`;
+                setTimeout(() => badge.classList.add('fade-out'), 3000);
+                setTimeout(() => badge.remove(), 4200);
+            }
+        }
+
+        // Re-deteksi saat HP/Tablet diputar
+        window.addEventListener('orientationchange', () => {
+            setTimeout(() => {
+                detectDevice();
+                // Rebuild track agar posisi bebek sesuai ukuran baru
+                if (typeof createRaceTrack === 'function') createRaceTrack();
+            }, 350);
+        });
+
         // Initialize everything when page loads
         document.addEventListener('DOMContentLoaded', () => {
+            detectDevice(); // ← deteksi otomatis saat halaman dibuka
             initGame();
             
             // Initialize audio system
