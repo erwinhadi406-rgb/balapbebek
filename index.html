@@ -28,6 +28,33 @@
             --finish-icon-size:     3.5rem;
         }
 
+        /* ======================================================
+           AUTO-FIT-TO-SCREEN — seluruh UI (judul, arena balap,
+           papan soal, footer) selalu pas dalam satu layar, apa pun
+           ukuran layarnya (HP hingga IFP 75"), TANPA terpotong/
+           tersembunyi dan TANPA perlu mode fullscreen browser.
+           Menggantikan pendekatan lama (flex-shrink + CSS zoom)
+           yang rawan membuat arena bebek "pipih"/gepeng saat total
+           tinggi konten melebihi tinggi layar — sekarang seluruh
+           konten diskalakan RATA (uniform) lewat transform, bukan
+           dipaksa saling berebut ruang oleh flexbox.
+           ====================================================== */
+        #fitWrapper {
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        #fitContent {
+            width: 100%;
+            transform-origin: top center;
+            will-change: transform;
+        }
+
         /* Badge perangkat terdeteksi */
         #device-badge {
             position: fixed;
@@ -216,8 +243,9 @@
   <!-- Badge deteksi perangkat otomatis -->
   <div id="device-badge">🔍 Mendeteksi perangkat...</div>
 
-  <div class="container mx-auto px-2 py-2 h-full flex flex-col overflow-hidden" style="max-height:100vh;"><!-- Setup Modal -->
-   <div id="setupModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50" style="backdrop-filter: blur(5px);">
+  <!-- Setup Modal — di luar #fitContent supaya TIDAK ikut ter-scale,
+       selalu overlay penuh terhadap layar sungguhan -->
+  <div id="setupModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50" style="backdrop-filter: blur(5px);">
     <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4 shadow-2xl">
      <div class="text-center mb-6">
       <div class="text-6xl mb-4">
@@ -247,7 +275,11 @@
      <div class="mt-6 flex gap-3"><button id="startGameBtn" class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition-colors"> 🏁 Mulai Balapan! </button>
      </div>
     </div>
-   </div><!-- Header -->
+   </div>
+
+  <div id="fitWrapper">
+  <div id="fitContent">
+  <div class="container mx-auto px-2 py-2"><!-- Header -->
    <header class="text-center mb-1 flex-shrink-0">
     <h1 id="gameTitle" class="game-title font-bold text-blue-800 mb-0.5">🦆 Game Balap Bebek 🦆</h1>
     <p class="text-sm text-blue-600">Siapa bebek tercepat hari ini?</p>
@@ -295,6 +327,8 @@
      <div id="quizScoreResults" class="grid grid-cols-4 gap-2"></div>
     </div>
    </div>
+  </div>
+  </div>
   </div>
   <script>
         // Google Apps Script doGet function for web deployment
@@ -1169,29 +1203,66 @@
             }
         }
 
-        function applyZoom() {
-            const container = document.querySelector('.container');
-            const isAndroid = /Android/i.test(navigator.userAgent);
-            
-            // Gunakan CSS zoom untuk Android (lebih akurat untuk touch)
-            if (isAndroid) {
-                container.style.zoom = zoomState.level;
-                container.style.transform = '';
-            } else {
-                // Gunakan transform scale untuk desktop
-                container.style.transform = `scale(${zoomState.level})`;
-                container.style.transformOrigin = 'top center';
-                container.style.zoom = '';
-            }
-            
-            // Update zoom level display
+        // =====================================================
+        //  AUTO-FIT-TO-SCREEN + ZOOM MANUAL — SATU sumber skala
+        //  Menggantikan pendekatan lama (CSS `zoom` di Android +
+        //  document.body.style.height hack) yang rawan bikin arena
+        //  bebek gepeng/pipih di sebagian browser TV/Android WebView
+        //  karena implementasi CSS `zoom` non-standar & tidak
+        //  konsisten. Sekarang SEMUA skala (otomatis + manual)
+        //  memakai transform:scale() pada #fitContent saja.
+        // =====================================================
+        let fitScaleValue = 1;
+
+        function fitToScreen() {
+            const wrapper = document.getElementById('fitWrapper');
+            const content = document.getElementById('fitContent');
+            if (!wrapper || !content) return;
+
+            // Ukur ukuran alami konten (tanpa transform) dulu
+            content.style.transform = 'none';
+            content.style.width = wrapper.clientWidth + 'px';
+
+            const naturalH = content.scrollHeight;
+            const naturalW = content.scrollWidth;
+            const availH = wrapper.clientHeight;
+            const availW = wrapper.clientWidth;
+            if (naturalH === 0 || naturalW === 0) return;
+
+            // Jangan pernah membesarkan otomatis (>1) — hanya
+            // menyusutkan bila konten lebih tinggi/lebar dari layar
+            fitScaleValue = Math.min(1, availW / naturalW, availH / naturalH);
+            applyCombinedScale();
+        }
+
+        function applyCombinedScale() {
+            const wrapper = document.getElementById('fitWrapper');
+            const content = document.getElementById('fitContent');
+            if (!wrapper || !content) return;
+
+            const finalScale = fitScaleValue * zoomState.level;
+            content.style.transform = `scale(${finalScale})`;
+
+            // Kompensasi supaya tetap center vertikal setelah discale
+            const naturalH = content.scrollHeight;
+            const availH = wrapper.clientHeight;
+            content.style.marginTop = Math.max(0, (availH - naturalH * finalScale) / 2) + 'px';
+
             const zoomDisplay = document.getElementById('zoomLevel');
-            zoomDisplay.textContent = `${Math.round(zoomState.level * 100)}%`;
-            
-            // Adjust body height to prevent scrolling issues
-            if (!isAndroid) {
-                document.body.style.height = `${100 / zoomState.level}%`;
-            }
+            if (zoomDisplay) zoomDisplay.textContent = `${Math.round(zoomState.level * 100)}%`;
+        }
+
+        function applyZoom() {
+            // Zoom manual sekarang hanya mengubah faktor pengali —
+            // skala otomatis (fitScaleValue) tetap dipertahankan agar
+            // konten tak pernah keluar/terpotong dari layar.
+            applyCombinedScale();
+        }
+
+        let fitDebounce;
+        function requestFit() {
+            clearTimeout(fitDebounce);
+            fitDebounce = setTimeout(fitToScreen, 60);
         }
 
         // Fullscreen functions
@@ -1269,6 +1340,7 @@
 
         function hideSetupModal() {
             document.getElementById('setupModal').classList.add('hidden');
+            requestFit();
         }
 
         function updateDifficultyInfo() {
@@ -1758,13 +1830,29 @@
                 detectDevice();
                 // Rebuild track agar posisi bebek sesuai ukuran baru
                 if (typeof createRaceTrack === 'function') createRaceTrack();
+                requestFit();
             }, 350);
         });
+
+        window.addEventListener('load', requestFit);
+        window.addEventListener('resize', requestFit);
+
+        // Re-fit otomatis setiap kali isi #fitContent berubah ukuran
+        // (soal baru, arena di-rebuild, skor berubah, dll) — ini yang
+        // mencegah arena bebek jadi gepeng/terpotong tanpa harus
+        // menambal satu-satu di setiap titik yang mengubah konten.
+        if (window.ResizeObserver) {
+            const fitContentEl = document.getElementById('fitContent');
+            if (fitContentEl) {
+                new ResizeObserver(() => requestFit()).observe(fitContentEl);
+            }
+        }
 
         // Initialize everything when page loads
         document.addEventListener('DOMContentLoaded', () => {
             detectDevice(); // ← deteksi otomatis saat halaman dibuka
             initGame();
+            requestFit();
             
             // Initialize audio system
             audioSystem.init();
