@@ -671,33 +671,23 @@
 
             const rootStyle = getComputedStyle(document.documentElement);
 
-            // Baca CSS variable --track-gap untuk posisi vertikal bebek
-            const trackGap = parseInt(rootStyle.getPropertyValue('--track-gap') || '58');
+            // Ukuran bebek dari CSS variable (diset detectDevice)
             const duckSize = parseInt(rootStyle.getPropertyValue('--duck-size') || '50');
-            const currentTrackHeight = parseInt(rootStyle.getPropertyValue('--track-height') || '300');
 
-            // ── Perbaikan: tinggi arena dihitung berdasarkan JUMLAH PEMAIN
-            // sebenarnya, bukan cuma mengandalkan breakpoint layar. Sebab
-            // breakpoint (mis. mode landscape pendek) bisa saja cocok
-            // walau pemainnya banyak (mis. saat embed di Canva / fullscreen
-            // dengan tinggi viewport terbatas), sehingga bebek baris bawah
-            // kepotong. Di sini kita paksa tinggi minimum arena supaya
-            // muat semua bebek + label nama, apa pun breakpoint yang aktif.
-            const labelAllowance = 34; // perkiraan tinggi label nama + margin
+            // Jarak antar baris = tinggi bebek + label nama (mt-1 + text-xs + py-1 ≈ 28px)
+            // + sedikit jeda, sehingga label TIDAK menimpa bebek di bawahnya.
+            const labelH = 28;
+            const trackGap = duckSize + labelH + 6;
             const topOffset = 10;
-            const bottomPadding = 14;
-            const requiredHeight = topOffset + (gameState.players.length * trackGap) + duckSize + labelAllowance + bottomPadding;
+            const bottomPadding = 10;
+            const borderAllowance = 8; // border-4 atas + bawah pada .race-track
+            const requiredHeight = topOffset + (gameState.players.length * trackGap) + bottomPadding + borderAllowance;
 
-            if (requiredHeight > currentTrackHeight) {
-                // Override variable --track-height secara inline (menang atas
-                // aturan :root di media query karena inline style pada
-                // elemen yang sama punya prioritas lebih tinggi)
-                document.documentElement.style.setProperty('--track-height', `${requiredHeight}px`);
-            } else {
-                // Jumlah pemain sedikit / breakpoint sudah cukup tinggi —
-                // hapus override supaya kembali mengikuti breakpoint asli
-                document.documentElement.style.removeProperty('--track-height');
-            }
+            // SELALU set tinggi arena secara eksplisit (jangan removeProperty:
+            // itu ikut menghapus nilai dari detectDevice dan arena jatuh ke 22vh
+            // sehingga hanya 2 bebek yang terlihat).
+            document.documentElement.style.setProperty('--track-gap', `${trackGap}px`);
+            document.documentElement.style.setProperty('--track-height', `${requiredHeight}px`);
 
             // Create all ducks in one track with different vertical positions
             gameState.players.forEach((player, index) => {
