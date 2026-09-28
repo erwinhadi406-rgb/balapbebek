@@ -706,6 +706,7 @@
                 duck.src = player.imageUrl;
                 duck.alt = player.name;
                 // Hapus width/height inline — biarkan CSS class .duck yang mengatur via --duck-size
+                duck.addEventListener('load', requestFit);
                 duck.style.objectFit = 'contain';
                 duck.style.filter = 'drop-shadow(0 2px 6px rgba(0,0,0,0.3))';
                 duck.onerror = function() {
@@ -1205,10 +1206,11 @@
         // =====================================================
         let fitScaleValue = 1;
         let fitBusy = false;
+        let fitAgain = false;
         const STAGE_MIN_W = 1200, STAGE_BASE_W = 1600, STAGE_MAX_W = 3000;
 
         function fitToScreen() {
-            if (fitBusy) return;
+            if (fitBusy) { fitAgain = true; return; }
             const wrapper = document.getElementById('fitWrapper');
             const content = document.getElementById('fitContent');
             if (!wrapper || !content) return;
@@ -1247,7 +1249,10 @@
                 fitScaleValue = Math.min(maxUp, availW / stageW, availH / naturalH);
                 applyCombinedScale(stageW, naturalH);
             }
-            requestAnimationFrame(() => { fitBusy = false; });
+            requestAnimationFrame(() => {
+                fitBusy = false;
+                if (fitAgain) { fitAgain = false; fitToScreen(); }
+            });
         }
 
         function applyCombinedScale(stageW, naturalH) {
@@ -1271,6 +1276,13 @@
             // skala otomatis (fitScaleValue) tetap dipertahankan agar
             // konten tak pernah keluar/terpotong dari layar.
             applyCombinedScale();
+        }
+
+        // Refit berulang setelah perubahan besar (mulai game, soal baru, reset):
+        // Tailwind CDN, gambar & font bisa mengubah ukuran beberapa saat kemudian.
+        function fitBurst() {
+            requestAnimationFrame(fitToScreen);
+            [120, 400, 1000, 2200].forEach(ms => setTimeout(fitToScreen, ms));
         }
 
         let fitDebounce;
@@ -1355,6 +1367,7 @@
         function hideSetupModal() {
             document.getElementById('setupModal').classList.add('hidden');
             requestFit();
+            fitBurst();
         }
 
         function updateDifficultyInfo() {
@@ -1450,9 +1463,12 @@
             
             document.getElementById('winnerDisplay').classList.add('hidden');
             
-            // Rebuild race track (jumlah bebek berubah) & mulai kuis baru
+            // Deteksi ulang profil layar (sama seperti jalur resize/fullscreen),
+            // lalu rebuild race track (jumlah bebek berubah) & mulai kuis baru
+            detectDevice();
             createRaceTrack();
             generateNewQuiz();
+            fitBurst();
         }
 
         // Setup event listeners
@@ -1523,6 +1539,7 @@
             
             // Re-enable all keypads
             enableAllKeypads();
+            fitBurst();
         }
         
         // Play again function
@@ -1836,7 +1853,8 @@
             }, 350);
         });
 
-        window.addEventListener('load', requestFit);
+        window.addEventListener('load', () => { requestFit(); fitBurst(); });
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(requestFit);
         window.addEventListener('resize', requestFit);
         document.addEventListener('fullscreenchange', requestFit);
         document.addEventListener('webkitfullscreenchange', requestFit);
@@ -1849,7 +1867,10 @@
         if (window.ResizeObserver) {
             const fitContentEl = document.getElementById('fitContent');
             if (fitContentEl) {
-                new ResizeObserver(() => requestFit()).observe(fitContentEl);
+                const ro = new ResizeObserver(() => requestFit());
+                ro.observe(fitContentEl);
+                const fw = document.getElementById('fitWrapper');
+                if (fw) ro.observe(fw);
             }
         }
 
