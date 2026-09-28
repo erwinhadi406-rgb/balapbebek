@@ -40,20 +40,21 @@
            dipaksa saling berebut ruang oleh flexbox.
            ====================================================== */
         #fitWrapper {
+            position: relative;
             width: 100%;
             height: 100vh;
             height: 100dvh;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
         }
         #fitContent {
-            width: 100%;
-            transform-origin: top center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-origin: top left;
             will-change: transform;
         }
+        /* Lebar "panggung" diatur JS; jangan dibatasi breakpoint Tailwind */
+        #fitContent .container { max-width: none !important; width: 100%; }
 
         /* Badge perangkat terdeteksi */
         #device-badge {
@@ -350,7 +351,7 @@
         let zoomState = {
             level: 1.0,
             min: 0.5,
-            max: 2.0,
+            max: 1.0,   // 100% = pas layar otomatis (tidak boleh melebihi layar)
             step: 0.1
         };
 
@@ -1213,40 +1214,63 @@
         //  memakai transform:scale() pada #fitContent saja.
         // =====================================================
         let fitScaleValue = 1;
+        let fitBusy = false;
+        const STAGE_MIN_W = 1200, STAGE_BASE_W = 1600, STAGE_MAX_W = 3000;
 
         function fitToScreen() {
+            if (fitBusy) return;
             const wrapper = document.getElementById('fitWrapper');
             const content = document.getElementById('fitContent');
             if (!wrapper || !content) return;
+            fitBusy = true;
 
-            // Ukur ukuran alami konten (tanpa transform) dulu
-            content.style.transform = 'none';
-            content.style.width = wrapper.clientWidth + 'px';
-
-            const naturalH = content.scrollHeight;
-            const naturalW = content.scrollWidth;
-            const availH = wrapper.clientHeight;
             const availW = wrapper.clientWidth;
-            if (naturalH === 0 || naturalW === 0) return;
+            const availH = wrapper.clientHeight;
+            if (!availW || !availH) { fitBusy = false; return; }
 
-            // Jangan pernah membesarkan otomatis (>1) — hanya
-            // menyusutkan bila konten lebih tinggi/lebar dari layar
-            fitScaleValue = Math.min(1, availW / naturalW, availH / naturalH);
-            applyCombinedScale();
+            const measure = (w) => {
+                content.style.transform = 'none';
+                content.style.width = w + 'px';
+                return content.scrollHeight;
+            };
+
+            let stageW, naturalH;
+            if (availW >= STAGE_MIN_W) {
+                // Layar besar: render pada lebar panggung tetap lalu skala naik/turun.
+                stageW = STAGE_BASE_W;
+                naturalH = measure(stageW);
+                // Jika terbatas tinggi, lebarkan panggung agar rasio konten
+                // mengikuti rasio layar (arena terisi penuh, tidak ada sisi kosong).
+                if (naturalH > 0 && availH / naturalH < availW / stageW) {
+                    const wider = Math.min(STAGE_MAX_W, Math.max(STAGE_MIN_W, availW / availH * naturalH));
+                    stageW = wider;
+                    naturalH = measure(stageW);
+                }
+            } else {
+                // HP / tablet: layout responsif biasa, hanya mengecil bila perlu
+                stageW = availW;
+                naturalH = measure(stageW);
+            }
+
+            if (naturalH > 0) {
+                const maxUp = availW >= STAGE_MIN_W ? Infinity : 1;
+                fitScaleValue = Math.min(maxUp, availW / stageW, availH / naturalH);
+                applyCombinedScale(stageW, naturalH);
+            }
+            requestAnimationFrame(() => { fitBusy = false; });
         }
 
-        function applyCombinedScale() {
+        function applyCombinedScale(stageW, naturalH) {
             const wrapper = document.getElementById('fitWrapper');
             const content = document.getElementById('fitContent');
             if (!wrapper || !content) return;
+            stageW = stageW || parseFloat(content.style.width) || wrapper.clientWidth;
+            naturalH = naturalH || content.scrollHeight;
 
             const finalScale = fitScaleValue * zoomState.level;
-            content.style.transform = `scale(${finalScale})`;
-
-            // Kompensasi supaya tetap center vertikal setelah discale
-            const naturalH = content.scrollHeight;
-            const availH = wrapper.clientHeight;
-            content.style.marginTop = Math.max(0, (availH - naturalH * finalScale) / 2) + 'px';
+            const x = (wrapper.clientWidth - stageW * finalScale) / 2;
+            const y = (wrapper.clientHeight - naturalH * finalScale) / 2;
+            content.style.transform = `translate(${x}px, ${Math.max(0, y)}px) scale(${finalScale})`;
 
             const zoomDisplay = document.getElementById('zoomLevel');
             if (zoomDisplay) zoomDisplay.textContent = `${Math.round(zoomState.level * 100)}%`;
@@ -1677,6 +1701,7 @@
             clearTimeout(resizeTimer);
             resizeTimer = setTimeout(() => {
                 // Reset posisi bebek agar sesuai ukuran layar baru
+                detectDevice();
                 createRaceTrack();
                 // Kembalikan posisi pemain yang sudah maju
                 gameState.players.forEach(player => {
@@ -1720,29 +1745,15 @@
             const ua       = navigator.userAgent.toLowerCase();
             const isMobile = /android|iphone|ipad|ipod|mobile/.test(ua);
             const isTablet = !isMobile && isTouch && diagIn >= 7 && diagIn < 14;
-            const isIFP    = diagIn >= 35 || W >= 3840 || (vw >= 1920 && diagIn >= 20);
+            // Profil dipilih dari lebar viewport CSS (bukan estimasi inci/DPR yang
+            // tidak akurat di IFP). Layar >=1200px dirender pada 'panggung' lalu di-scale.
+            const isStage  = vw >= 1200;
+            const isPhoneW = vw < 700;
+            const isTabletW = !isStage && !isPhoneW;
 
             let label, p;
 
-            if (isIFP) {
-                label = '📺 IFP / Layar Besar';
-                p = {
-                    duckSize:      '90px',
-                    trackHeight:   '28vh',
-                    btnMinH:       '80px',
-                    btnFont:       '24px',
-                    btnGap:        '8px',
-                    keypadMaxW:    '300px',
-                    quizQFont:     '1.6rem',
-                    quizH4Font:    '1.3rem',
-                    answerMinH:    '68px',
-                    answerFont:    '1.6rem',
-                    cardPadding:   '22px',
-                    titleSize:     '4.5rem',
-                    finishIcon:    '6rem',
-                    baseFontPx:    22,
-                };
-            } else if (isMobile && diagIn < 7) {
+            if (isPhoneW) {
                 label = '📱 HP / Smartphone';
                 p = {
                     duckSize:      '28px',
@@ -1760,7 +1771,7 @@
                     finishIcon:    '1.8rem',
                     baseFontPx:    13,
                 };
-            } else if (isTablet) {
+            } else if (isTabletW) {
                 label = '📱 Tablet';
                 p = {
                     duckSize:      '42px',
@@ -1796,6 +1807,7 @@
                     finishIcon:    '3.5rem',
                     baseFontPx:    16,
                 };
+                if (vw >= 1900) label = '📺 IFP / Layar Besar';
             }
 
             // Terapkan ke CSS variables
@@ -1836,6 +1848,9 @@
 
         window.addEventListener('load', requestFit);
         window.addEventListener('resize', requestFit);
+        document.addEventListener('fullscreenchange', requestFit);
+        document.addEventListener('webkitfullscreenchange', requestFit);
+        if (window.visualViewport) window.visualViewport.addEventListener('resize', requestFit);
 
         // Re-fit otomatis setiap kali isi #fitContent berubah ukuran
         // (soal baru, arena di-rebuild, skor berubah, dll) — ini yang
