@@ -170,6 +170,10 @@
             transition: transform 0.15s ease, filter 0.15s ease;
             will-change: transform;
         }
+        /* Tombol popup pemenang — terpisah dari keypad supaya tidak ikut ter-disable */
+        .winner-btn { cursor:pointer; border:none; pointer-events:auto; touch-action:manipulation; transition:transform .15s ease, filter .15s ease; }
+        .winner-btn:hover  { transform:scale(1.06); filter:brightness(1.05); }
+        .winner-btn:active { transform:scale(.93);  filter:brightness(.9); }
         .keypad-btn:hover  { transform: scale(1.06); filter: brightness(1.05); }
         .keypad-btn:active { transform: scale(0.93); filter: brightness(0.9);  }
 
@@ -298,14 +302,14 @@
      <div id="raceTrack" class="relative h-full"><!-- Ducks will be positioned here -->
      </div>
     </div><!-- Winner Display -->
-    <div id="winnerDisplay" class="hidden absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
+    <div id="winnerDisplay" class="hidden absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10" style="pointer-events:auto;">
      <div class="bg-white rounded-lg p-6 md:p-8 text-center w-[90%] max-w-md shadow-2xl">
       <div class="text-5xl md:text-6xl mb-3">🏆</div>
       <h2 class="text-2xl md:text-3xl font-bold text-yellow-600 mb-2">Selamat!</h2>
       <p id="winnerText" class="text-lg md:text-xl text-gray-700 mb-5"></p>
       <div class="flex gap-3 justify-center flex-wrap">
-       <button id="playAgainBtn" class="keypad-btn bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition-colors" style="min-height:44px;font-size:15px;width:auto;"> 🎮 Bermain Lagi </button>
-       <button id="closeWinnerBtn" class="keypad-btn bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-colors" style="min-height:44px;font-size:15px;width:auto;"> ❌ Tutup </button>
+       <button id="playAgainBtn" type="button" class="winner-btn bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition-colors" style="min-height:44px;font-size:15px;width:auto;"> 🎮 Bermain Lagi </button>
+       <button id="closeWinnerBtn" type="button" class="winner-btn bg-gray-500 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-colors" style="min-height:44px;font-size:15px;width:auto;"> ❌ Tutup </button>
       </div>
      </div>
     </div>
@@ -1149,7 +1153,7 @@
         
         // Disable all keypad buttons
         function disableAllKeypads() {
-            const allButtons = document.querySelectorAll('.keypad-btn');
+            const allButtons = document.querySelectorAll('#quizBoard .keypad-btn');
             allButtons.forEach(button => {
                 button.classList.add('opacity-50', 'cursor-not-allowed');
                 button.disabled = true;
@@ -1158,7 +1162,7 @@
         
         // Enable all keypad buttons
         function enableAllKeypads() {
-            const allButtons = document.querySelectorAll('.keypad-btn');
+            const allButtons = document.querySelectorAll('#quizBoard .keypad-btn');
             allButtons.forEach(button => {
                 button.classList.remove('opacity-50', 'cursor-not-allowed');
                 button.disabled = false;
